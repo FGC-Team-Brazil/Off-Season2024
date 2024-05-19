@@ -1,16 +1,16 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.teamcode.hardware.RobotHardware.arcadeDrive;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
 public class Drivetrain{
     private final DcMotor motorRight;
     private final DcMotor motorLeft;
-
+    private final IMU imu;
     public Drivetrain(){
+        imu = RobotHardware.DTimu;
         motorRight = RobotHardware.DTmotorRight;
         motorLeft= RobotHardware.DTmotorLeft;
     }

@@ -5,11 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 public class RobotHardware {
-    public static IMU imu;
-    public static DcMotor motorFrontRight;
-    public static DcMotor motorbackRight;
-    public static DcMotor motorfrontLeft;
-    public static DcMotor motorbackLeft;
+    public static  DcMotor DTmotorLeft;
+    public static DcMotor DTmotorRight;
     static HardwareMap hardwareMap;
 
 
@@ -18,13 +15,13 @@ public class RobotHardware {
         hardwareMap = map;
     }
     public static void initAll() {
-        imu = hardwareMap.get(IMU.class, "imu");
-        motorFrontRight = hardwareMap.get(DcMotor.class, "FRmotor");
-        motorbackRight = hardwareMap.get(DcMotor.class, "BRmotor");
-        motorfrontLeft = hardwareMap.get(DcMotor.class, "FLmotor");
-        motorbackLeft = hardwareMap.get(DcMotor.class, "BLmotor");
+        DTmotorLeft = hardwareMap.get(DcMotor.class, "DTmotorLeft");
+        DTmotorRight = hardwareMap.get(DcMotor.class, "DTmotorRight");
     }
-
+    public static void setDrivetrainPower(double   leftPower, double rightPower){
+        DTmotorLeft.setPower(leftPower);
+        DTmotorRight.setPower(rightPower);
+    }
 
 
 }

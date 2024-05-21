@@ -1,26 +1,44 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static com.qualcomm.robotcore.hardware.DcMotor.*;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
 public class Drivetrain{
-    private final DcMotor motorFrontRight;
-    private final DcMotor motorFrontLeft;
-    private final DcMotor motorBackRight;
-    private final DcMotor motorBackLeft;
+    private final DcMotor motorRight;
+    private final DcMotor motorLeft;
+    private final IMU imu;
+
 
     public Drivetrain(){
-        motorFrontRight = RobotHardware.motorFrontRight;
-        motorFrontLeft= RobotHardware.motorfrontLeft;
-        motorBackLeft= RobotHardware.motorbackLeft;
-        motorBackRight = RobotHardware.motorbackRight;
+        imu = RobotHardware.DTimu;
+        motorRight = RobotHardware.DTmotorRight;
+        motorLeft= RobotHardware.DTmotorLeft;
+
+        motorLeft.setMode(RunMode.RUN_WITHOUT_ENCODER);
+        motorRight.setMode(RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void power (double output){
+        motorRight.setPower(-output);
+        motorLeft.setPower(-output);
+    }
+
+    public static void arcadeDrive(double xSpeed, double zRotation){
+        xSpeed = Math.max(-1.0, Math.min(1.0, xSpeed));
+        zRotation = Math.max(-1.0, Math.min(1.0, zRotation));
+
+        double leftSpeed = xSpeed - zRotation;
+        double rightSpeed = xSpeed + zRotation;
+
+        RobotHardware.setDrivetrainPower(leftSpeed, rightSpeed);
     }
 
     public void stop(){
-        motorBackRight.setPower(0);
-        motorFrontLeft.setPower(0);
-        motorFrontRight.setPower(0);
-        motorBackLeft.setPower(0);
+        motorRight.setPower(0);
+        motorLeft.setPower(0);
     }
 }

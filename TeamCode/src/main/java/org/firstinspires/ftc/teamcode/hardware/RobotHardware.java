@@ -15,10 +15,10 @@ public class RobotHardware {
     public static void setHardwareMap(HardwareMap map){
         hardwareMap = map;
     }
-    public static void initAll() {
-        DTmotorLeft = hardwareMap.get(DcMotor.class, "DTmotorLeft");
-        DTmotorRight = hardwareMap.get(DcMotor.class, "DTmotorRight");
-        DTimu = hardwareMap.get(IMU.class, "DTImu");
+    public static void initAll(HardwareMap hardwareMap) {
+        DTmotorLeft = RobotHardware.hardwareMap.get(DcMotor.class, "DTmotorLeft");
+        DTmotorRight = RobotHardware.hardwareMap.get(DcMotor.class, "DTmotorRight");
+        DTimu = RobotHardware.hardwareMap.get(IMU.class, "DTImu");
     }
     public static void setDrivetrainPower(double   leftPower, double rightPower){
         DTmotorLeft.setPower(leftPower);

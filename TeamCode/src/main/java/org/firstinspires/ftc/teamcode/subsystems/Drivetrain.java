@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static com.qualcomm.robotcore.hardware.DcMotor.*;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -9,10 +11,20 @@ public class Drivetrain{
     private final DcMotor motorRight;
     private final DcMotor motorLeft;
     private final IMU imu;
+
+
     public Drivetrain(){
         imu = RobotHardware.DTimu;
         motorRight = RobotHardware.DTmotorRight;
         motorLeft= RobotHardware.DTmotorLeft;
+
+        motorLeft.setMode(RunMode.RUN_WITHOUT_ENCODER);
+        motorRight.setMode(RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void power (double output){
+        motorRight.setPower(-output);
+        motorLeft.setPower(-output);
     }
 
     public static void arcadeDrive(double xSpeed, double zRotation){

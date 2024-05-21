@@ -9,10 +9,12 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 @TeleOp (name = "Teste")
 public class TeleOpMode extends LinearOpMode {
 
+
+
     @Override
     public void runOpMode() throws InterruptedException {
         RobotHardware.setHardwareMap(hardwareMap);
-        RobotHardware.initAll();
+        RobotHardware.initAll(hardwareMap);
         while (opModeIsActive()) {
             loopRobot();
         }

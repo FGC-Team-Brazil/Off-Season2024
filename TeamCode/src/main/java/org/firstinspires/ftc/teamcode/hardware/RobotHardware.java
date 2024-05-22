@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.hardware.hardwareMap;
+package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -18,16 +18,13 @@ public class RobotHardware {
 
     public static class Drivetrain {
         public static IMU imu;
-        public static DcMotor motorFrontRight;
-        public static DcMotor motorBackRight;
-        public static DcMotor motorFrontLeft;
-        public static DcMotor motorBackLeft;
+        public static DcMotor motorRight;
+        public static DcMotor motorLeft;
 
         public static void init(){
-            motorFrontRight = hardwareMap.get(DcMotor.class, "FRmotor");
-            motorBackRight = hardwareMap.get(DcMotor.class, "BRmotor");
-            motorFrontLeft = hardwareMap.get(DcMotor.class, "FLmotor");
-            motorBackLeft = hardwareMap.get(DcMotor.class, "BLmotor");
+            motorRight = hardwareMap.get(DcMotor.class, "Rmotor");
+            motorLeft = hardwareMap.get(DcMotor.class, "Lmotor");
+
         }
     }
 

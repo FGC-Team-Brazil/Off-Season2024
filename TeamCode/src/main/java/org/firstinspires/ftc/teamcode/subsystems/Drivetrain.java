@@ -1,26 +1,45 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
 
-import org.firstinspires.ftc.teamcode.hardware.hardwareMap.RobotHardware;
+import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
 public class Drivetrain{
-    private final DcMotor motorFrontRight;
-    private final DcMotor motorFrontLeft;
-    private final DcMotor motorBackRight;
-    private final DcMotor motorBackLeft;
 
-    public Drivetrain(){
-        motorFrontRight = RobotHardware.Drivetrain.motorFrontRight;
-        motorFrontLeft= RobotHardware.Drivetrain.motorFrontRight;
-        motorBackLeft= RobotHardware.Drivetrain.motorFrontRight;
-        motorBackRight = RobotHardware.Drivetrain.motorFrontRight;
+    private static Drivetrain instance;
+    private static DcMotor motorRight;
+    private static DcMotor motorLeft;
+    private IMU imu;
+
+    private Drivetrain(){
+        imu = RobotHardware.Drivetrain.imu;
+        motorRight = RobotHardware.Drivetrain.motorRight;
+        motorLeft= RobotHardware.Drivetrain.motorLeft;
     }
 
+    public void arcadeDrive(double xSpeed, double zRotation){
+        xSpeed = Math.max(-1.0, Math.min(1.0, xSpeed));
+        zRotation = Math.max(-1.0, Math.min(1.0, zRotation));
+
+        double leftSpeed = xSpeed - zRotation;
+        double rightSpeed = xSpeed + zRotation;
+
+        setSpeed(leftSpeed, rightSpeed);
+    }
+
+    public void setSpeed(double leftSpeed, double rightSpeed){
+        motorLeft.setPower(leftSpeed);
+        motorRight.setPower(rightSpeed);
+    }
     public void stop(){
-        motorBackRight.setPower(0);
-        motorFrontLeft.setPower(0);
-        motorFrontRight.setPower(0);
-        motorBackLeft.setPower(0);
+        motorRight.setPower(0);
+        motorLeft.setPower(0);
+    }
+    public static synchronized Drivetrain getInstance(){
+        if(instance == null){
+            instance = new Drivetrain();
+        }
+        return instance;
     }
 }

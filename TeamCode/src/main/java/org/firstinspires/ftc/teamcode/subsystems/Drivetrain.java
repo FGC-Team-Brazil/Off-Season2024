@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.hardware.hardwareMap.RobotHardware;
 
 public class Drivetrain{
     private final DcMotor motorFrontRight;
@@ -11,10 +11,10 @@ public class Drivetrain{
     private final DcMotor motorBackLeft;
 
     public Drivetrain(){
-        motorFrontRight = RobotHardware.motorFrontRight;
-        motorFrontLeft= RobotHardware.motorfrontLeft;
-        motorBackLeft= RobotHardware.motorbackLeft;
-        motorBackRight = RobotHardware.motorbackRight;
+        motorFrontRight = RobotHardware.Drivetrain.motorFrontRight;
+        motorFrontLeft= RobotHardware.Drivetrain.motorFrontRight;
+        motorBackLeft= RobotHardware.Drivetrain.motorFrontRight;
+        motorBackRight = RobotHardware.Drivetrain.motorFrontRight;
     }
 
     public void stop(){

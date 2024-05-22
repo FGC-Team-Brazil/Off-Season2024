@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.commands.drivetrain.ArcadeDrive;
-import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.hardware.hardwareMap.RobotHardware;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp (name = "Teste")
@@ -15,7 +14,7 @@ public class TeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         RobotHardware.setHardwareMap(hardwareMap);
-        RobotHardware.initAll();
+        RobotHardware.init();
         this.drivetrain = new Drivetrain();
         while (opModeIsActive()) {
             loopRobot();

@@ -8,14 +8,14 @@ import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 public class Drivetrain{
 
     private static Drivetrain instance;
-    private static DcMotor motorRight;
-    private static DcMotor motorLeft;
+    private static DcMotor MOTOR_RIGHT;
+    private static DcMotor MOTOR_LEFT;
     private IMU imu;
 
     private Drivetrain(){
-        imu = RobotHardware.Drivetrain.imu;
-        motorRight = RobotHardware.Drivetrain.motorRight;
-        motorLeft= RobotHardware.Drivetrain.motorLeft;
+        imu = RobotHardware.Drivetrain.IMU;
+        MOTOR_RIGHT = RobotHardware.Drivetrain.MOTOR_RIGHT;
+        MOTOR_LEFT = RobotHardware.Drivetrain.MOTOR_LEFT;
     }
 
     public void arcadeDrive(double xSpeed, double zRotation){
@@ -29,12 +29,12 @@ public class Drivetrain{
     }
 
     public void setSpeed(double leftSpeed, double rightSpeed){
-        motorLeft.setPower(leftSpeed);
-        motorRight.setPower(rightSpeed);
+        MOTOR_LEFT.setPower(leftSpeed);
+        MOTOR_RIGHT.setPower(rightSpeed);
     }
     public void stop(){
-        motorRight.setPower(0);
-        motorLeft.setPower(0);
+        MOTOR_RIGHT.setPower(0);
+        MOTOR_LEFT.setPower(0);
     }
     public static synchronized Drivetrain getInstance(){
         if(instance == null){

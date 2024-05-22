@@ -16,11 +16,11 @@ public class Drivetrain{
     }
 
     public static void arcadeDrive(double xSpeed, double zRotation){
-        xSpeed = Math.max(-1.0, Math.min(1.0, xSpeed));
-        zRotation = Math.max(-1.0, Math.min(1.0, zRotation));
+        double xSpeedLimited = Math.max(-1.0, Math.min(1.0, xSpeed));
+        double zRotationLimited = Math.max(-1.0, Math.min(1.0, zRotation));
 
-        double leftSpeed = xSpeed - zRotation;
-        double rightSpeed = xSpeed + zRotation;
+        double leftSpeed = xSpeedLimited - zRotationLimited;
+        double rightSpeed = xSpeedLimited + zRotationLimited;
 
         RobotHardware.setDrivetrainPower(leftSpeed, rightSpeed);
     }

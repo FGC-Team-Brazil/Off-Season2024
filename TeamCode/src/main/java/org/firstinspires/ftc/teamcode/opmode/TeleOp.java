@@ -3,27 +3,31 @@ package org.firstinspires.ftc.teamcode.opmode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.commands.drivetrain.ArcadeDrive;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.util.SmartController;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp (name = "Teste")
-public class TeleOp extends LinearOpMode {
+public class TeleOp extends OpMode {
 
-    private Drivetrain drivetrain;
-
+    private SmartController driver;
+    private SmartController operator;
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void init() {
         RobotHardware.setHardwareMap(hardwareMap);
-        RobotHardware.initAll();
-        this.drivetrain = new Drivetrain();
-        while (opModeIsActive()) {
-            loopRobot();
-        }
+        RobotHardware.init();
+        driver = new SmartController(gamepad1);
+        operator = new SmartController(gamepad2);
     }
 
-    public void loopRobot() {
-        new ArcadeDrive(drivetrain, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+    @Override
+    public void loop() {
+        Drivetrain.getInstance().arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX());
+    }
+
+    @Override
+    public void stop() {
+        Drivetrain.getInstance().stop();
     }
 
 }

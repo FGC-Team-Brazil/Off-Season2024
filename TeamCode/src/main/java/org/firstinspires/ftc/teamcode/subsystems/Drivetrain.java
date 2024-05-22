@@ -1,26 +1,36 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-
-import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import static org.firstinspires.ftc.teamcode.hardware.RobotHardware.Drivetrain.*;
 
 public class Drivetrain{
-    private final DcMotor motorFrontRight;
-    private final DcMotor motorFrontLeft;
-    private final DcMotor motorBackRight;
-    private final DcMotor motorBackLeft;
+    private static Drivetrain instance;
 
-    public Drivetrain(){
-        motorFrontRight = RobotHardware.motorFrontRight;
-        motorFrontLeft= RobotHardware.motorfrontLeft;
-        motorBackLeft= RobotHardware.motorbackLeft;
-        motorBackRight = RobotHardware.motorbackRight;
+    private Drivetrain(){
+
     }
 
+    public void arcadeDrive(double xSpeed, double zRotation){
+        xSpeed = Math.max(-1.0, Math.min(1.0, xSpeed));
+        zRotation = Math.max(-1.0, Math.min(1.0, zRotation));
+
+        double leftSpeed = xSpeed - zRotation;
+        double rightSpeed = xSpeed + zRotation;
+
+        setSpeed(leftSpeed, rightSpeed);
+    }
+
+    public void setSpeed(double leftSpeed, double rightSpeed){
+        motorLeft.setPower(leftSpeed);
+        motorRight.setPower(rightSpeed);
+    }
     public void stop(){
-        motorBackRight.setPower(0);
-        motorFrontLeft.setPower(0);
-        motorFrontRight.setPower(0);
-        motorBackLeft.setPower(0);
+        motorRight.setPower(0);
+        motorLeft.setPower(0);
+    }
+    public static synchronized Drivetrain getInstance(){
+        if(instance == null){
+            instance = new Drivetrain();
+        }
+        return instance;
     }
 }

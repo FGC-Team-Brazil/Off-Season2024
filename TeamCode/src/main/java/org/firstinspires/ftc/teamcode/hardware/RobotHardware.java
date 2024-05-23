@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.constants.RobotHardwareConstants;
-import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 
 public class RobotHardware {
     private static HardwareMap hardwareMap;
@@ -14,19 +13,15 @@ public class RobotHardware {
         hardwareMap = map;
     }
     public static void init() {
-        DrivetrainHardwareMap.init();
+        DrivetrainHardwareMap.motorLeft = hardwareMap.get(DcMotor.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.MOTOR_LEFT);
+        DrivetrainHardwareMap.motorRight = hardwareMap.get(DcMotor.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.MOTOR_RIGHT);
+        DrivetrainHardwareMap.imu = hardwareMap.get(IMU.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.IMU);
     }
 
     public static class DrivetrainHardwareMap {
         public static IMU imu;
         public static DcMotor motorRight;
         public static DcMotor motorLeft;
-
-        public static void init(){
-            motorRight = hardwareMap.get(DcMotor.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.MOTOR_RIGHT);
-            motorLeft = hardwareMap.get(DcMotor.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.MOTOR_LEFT);
-            imu = hardwareMap.get(IMU.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.IMU);
-        }
     }
 
 }

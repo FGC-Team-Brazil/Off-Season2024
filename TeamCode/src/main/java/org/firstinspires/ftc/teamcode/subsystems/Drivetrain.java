@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static org.firstinspires.ftc.teamcode.hardware.RobotHardware.DrivetrainHardwareMap.*;
 
-public class Drivetrain{
+import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
+
+public class Drivetrain implements Subsystem {
     private static Drivetrain instance;
 
     private Drivetrain(){
@@ -15,17 +17,21 @@ public class Drivetrain{
         double leftSpeed = xSpeedLimited - zRotationLimited;
         double rightSpeed = xSpeedLimited + zRotationLimited;
 
-        instance.setSpeed(leftSpeed, rightSpeed);
+        instance.setPower(leftSpeed, rightSpeed);
     }
 
-    public void setSpeed(double leftSpeed, double rightSpeed){
-        motorLeft.setPower(leftSpeed);
-        motorRight.setPower(rightSpeed);
-    }
+    @Override
     public void stop(){
         motorRight.setPower(0);
         motorLeft.setPower(0);
     }
+
+    @Override
+    public void setPower(double... powers) {
+        motorLeft.setPower(powers[0]);
+        motorRight.setPower(powers[1]);
+    }
+
     public static synchronized Drivetrain getInstance(){
         if(instance == null){
             instance = new Drivetrain();

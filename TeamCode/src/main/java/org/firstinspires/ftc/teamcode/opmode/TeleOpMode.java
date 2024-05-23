@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp (name = "Teste")
-public class TeleOp extends OpMode {
+public class TeleOpMode extends OpMode {
 
     private SmartController driver;
     private SmartController operator;

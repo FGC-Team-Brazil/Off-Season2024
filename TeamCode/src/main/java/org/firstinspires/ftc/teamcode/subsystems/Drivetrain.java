@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.teamcode.hardware.RobotHardware.Drivetrain.*;
+import static org.firstinspires.ftc.teamcode.hardware.RobotHardware.DrivetrainHardwareMap.*;
 
 public class Drivetrain{
     private static Drivetrain instance;

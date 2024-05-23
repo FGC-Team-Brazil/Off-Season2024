@@ -14,18 +14,18 @@ public class RobotHardware {
         hardwareMap = map;
     }
     public static void init() {
-        Drivetrain.init();
+        DrivetrainHardwareMap.init();
     }
 
-    public static class Drivetrain {
+    public static class DrivetrainHardwareMap {
         public static IMU imu;
         public static DcMotor motorRight;
         public static DcMotor motorLeft;
 
         public static void init(){
-            motorRight = hardwareMap.get(DcMotor.class, RobotHardwareConstants.Drivetrain.MOTOR_RIGHT);
-            motorLeft = hardwareMap.get(DcMotor.class, RobotHardwareConstants.Drivetrain.MOTOR_LEFT);
-            imu = hardwareMap.get(IMU.class, RobotHardwareConstants.Drivetrain.IMU);
+            motorRight = hardwareMap.get(DcMotor.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.MOTOR_RIGHT);
+            motorLeft = hardwareMap.get(DcMotor.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.MOTOR_LEFT);
+            imu = hardwareMap.get(IMU.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.IMU);
         }
     }
 

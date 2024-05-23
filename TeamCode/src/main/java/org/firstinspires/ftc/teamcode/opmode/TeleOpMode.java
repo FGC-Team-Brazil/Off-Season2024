@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.util.SmartController;
@@ -17,12 +16,12 @@ public class TeleOpMode extends OpMode {
     private SmartController operator;
     @Override
     public void init() {
-        RobotHardware.setHardwareMap(hardwareMap);
-        RobotHardware.init();
         this.driver = new SmartController(gamepad1);
         this.operator = new SmartController(gamepad2);
         this.Subsystems = new ArrayList<Subsystem>();
         this.Subsystems.add(Drivetrain.getInstance());
+
+        Subsystems.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));
     }
 
     @Override

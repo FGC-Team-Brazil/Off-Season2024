@@ -11,26 +11,33 @@ import java.util.ArrayList;
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp (name = "Teste")
 public class TeleOpMode extends OpMode {
 
-    private ArrayList<Subsystem> subsystems;
+    private ArrayList<Subsystem> subsystemsDriver;
+    private ArrayList<Subsystem> subsystemsOperator;
     private SmartController driver;
     private SmartController operator;
     @Override
     public void init() {
         this.driver = new SmartController(gamepad1);
         this.operator = new SmartController(gamepad2);
-        this.subsystems = new ArrayList<Subsystem>();
-        this.subsystems.add(Drivetrain.getInstance());
 
-        subsystems.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));
+        this.subsystemsDriver = new ArrayList<Subsystem>();
+        this.subsystemsOperator = new ArrayList<Subsystem>();
+
+        this.subsystemsDriver.add(Drivetrain.getInstance());
+
+        subsystemsDriver.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));
+        subsystemsOperator.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));
     }
 
     @Override
     public void loop() {
-        Drivetrain.getInstance().arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX());
+        subsystemsDriver.forEach(subsystem -> subsystem.execute(driver));
+        subsystemsOperator.forEach(subsystem -> subsystem.execute(operator));
     }
 
     @Override
     public void stop() {
-        subsystems.forEach(Subsystem::stop);
+        subsystemsDriver.forEach(Subsystem::stop);
+        subsystemsOperator.forEach(Subsystem::stop);
     }
 }

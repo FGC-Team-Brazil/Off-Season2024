@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.constants.RobotHardwareConstants;
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
+import org.firstinspires.ftc.teamcode.util.SmartController;
 
 public class Drivetrain implements Subsystem {
     private static Drivetrain instance;
@@ -18,14 +22,10 @@ public class Drivetrain implements Subsystem {
     private Drivetrain(){
     }
 
-    public void arcadeDrive(double xSpeed, double zRotation){
-        double xSpeedLimited = Math.max(-1.0, Math.min(1.0, xSpeed));
-        double zRotationLimited = Math.max(-1.0, Math.min(1.0, zRotation));
+    @Override
+    public void execute(SmartController driver) {
+        arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX());
 
-        double leftSpeed = xSpeedLimited - zRotationLimited;
-        double rightSpeed = xSpeedLimited + zRotationLimited;
-
-        setPower(leftSpeed, rightSpeed);
     }
 
     @Override
@@ -39,6 +39,16 @@ public class Drivetrain implements Subsystem {
     public void stop(){
         motorRight.setPower(0);
         motorLeft.setPower(0);
+    }
+
+    public void arcadeDrive(double xSpeed, double zRotation){
+        double xSpeedLimited = Math.max(-1.0, Math.min(1.0, xSpeed));
+        double zRotationLimited = Math.max(-1.0, Math.min(1.0, zRotation));
+
+        double leftSpeed = xSpeedLimited - zRotationLimited;
+        double rightSpeed = xSpeedLimited + zRotationLimited;
+
+        setPower(leftSpeed, rightSpeed);
     }
 
     public void setPower(double leftSpeed, double rightSpeed) {

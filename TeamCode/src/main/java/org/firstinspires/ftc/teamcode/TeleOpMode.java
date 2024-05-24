@@ -11,17 +11,17 @@ import java.util.ArrayList;
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp (name = "Teste")
 public class TeleOpMode extends OpMode {
 
-    private ArrayList<Subsystem> Subsystems;
+    private ArrayList<Subsystem> subsystems;
     private SmartController driver;
     private SmartController operator;
     @Override
     public void init() {
         this.driver = new SmartController(gamepad1);
         this.operator = new SmartController(gamepad2);
-        this.Subsystems = new ArrayList<Subsystem>();
-        this.Subsystems.add(Drivetrain.getInstance());
+        this.subsystems = new ArrayList<Subsystem>();
+        this.subsystems.add(Drivetrain.getInstance());
 
-        Subsystems.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));
+        subsystems.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));
     }
 
     @Override
@@ -31,6 +31,6 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void stop() {
-        Subsystems.forEach(Subsystem::stop);
+        subsystems.forEach(Subsystem::stop);
     }
 }

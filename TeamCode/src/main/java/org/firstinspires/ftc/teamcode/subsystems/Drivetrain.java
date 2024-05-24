@@ -25,7 +25,7 @@ public class Drivetrain implements Subsystem {
         double leftSpeed = xSpeedLimited - zRotationLimited;
         double rightSpeed = xSpeedLimited + zRotationLimited;
 
-        instance.setPower(leftSpeed, rightSpeed);
+        setPower(leftSpeed, rightSpeed);
     }
 
     @Override

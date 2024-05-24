@@ -1,14 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.constants.RobotHardwareConstants;
+import org.firstinspires.ftc.teamcode.constants.DrivetrainConstants;
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 
@@ -30,9 +27,9 @@ public class Drivetrain implements Subsystem {
 
     @Override
     public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
-        motorLeft = hardwareMap.get(DcMotor.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.MOTOR_LEFT);
-        motorRight = hardwareMap.get(DcMotor.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.MOTOR_RIGHT);
-        imu = hardwareMap.get(IMU.class, RobotHardwareConstants.DrivetrainHardwareMapConstants.IMU);
+        motorLeft = hardwareMap.get(DcMotor.class, DrivetrainConstants.MOTOR_LEFT);
+        motorRight = hardwareMap.get(DcMotor.class, DrivetrainConstants.MOTOR_RIGHT);
+        imu = hardwareMap.get(IMU.class, DrivetrainConstants.IMU);
     }
 
     @Override

@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "Static Heading")
 public class StaticHeading {
-
     public enum Mode {
         POSITION,
         ANGLE,
@@ -18,9 +17,11 @@ public class StaticHeading {
     private double kF;
 
     private double integralSum = 0;
+
     private double setPoint;
     private boolean atSetPoint;
     private double positionTolerance = 0;
+
     private double output =0;
     private Mode actualMode;
 
@@ -71,8 +72,8 @@ public class StaticHeading {
     }
 
     public void setPowerMotor(DcMotor dcMotor,int revolutionEncoder){
-        int i = this.revolutionEncoder / 360;
-        dcMotor.setPower(output);
+        int conversionValue = this.revolutionEncoder / 360;
+        dcMotor.setPower(output * conversionValue);
     }
 
     private double angleWrap(double radians){

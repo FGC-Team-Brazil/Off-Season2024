@@ -10,13 +10,18 @@ public class StaticHeading {
         POSITION,
         ANGLE,
     }
-   private double kP;
+
+    private double kP;
     private double kI;
     private double kD;
     private double kF;
 
     private double integralSum = 0;
-    private double setPoint = 0;
+
+    private double setPoint;
+    private boolean atSetPoint;
+    private double positionTolerance = 0;
+
     private double output =0;
     private Mode actualMode;
 
@@ -42,6 +47,7 @@ public class StaticHeading {
     }
 
     public double PIDControl(double setPoint, double realPosition) {
+        this.setPoint = setPoint;
         double error = 0;
 
         if(actualMode == Mode.ANGLE){
@@ -55,7 +61,13 @@ public class StaticHeading {
         lastError = error;
         timer.reset();
         double output = (error * kP) + (derivative * kD) + (integralSum * kI) + kF;
-        this.output = output;
+
+        if (Math.abs(error) < positionTolerance){
+            atSetPoint = true;
+            output = 0;
+        } else{
+            this.output = output;
+        }
         return output;
     }
 
@@ -73,4 +85,19 @@ public class StaticHeading {
         }
         return radians;
     }
+
+    // Set Methods
+    public void setKP(double newKP){this.kP = newKP;}
+    public void setKI(double newKI){this.kI = newKI;}
+    public void setKD(double newKD){this.kD = newKD;}
+    public void setKF(double newKF){this.kF = newKF;}
+    public void setSetPoint(double setPoint){this.setPoint = setPoint;}
+    public void setTolerance(double positionTolerance){this.positionTolerance = Math.abs(positionTolerance);}
+
+    // Get Methods
+    public double getKP(double newKP){return this.kP;}
+    public double getKI(double newKI){return this.kI;}
+    public double getKD(double newKD){return this.kD;}
+    public double getKF(double newKF){return this.kF;}
+    public boolean atSetPoint(){return atSetPoint;}
 }

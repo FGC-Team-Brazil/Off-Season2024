@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.util.SmartController;
+import org.firstinspires.ftc.teamcode.util.StaticHeading;
 
 public class Intake implements Subsystem {
 
@@ -17,7 +18,9 @@ public class Intake implements Subsystem {
     private TouchSensor limitLeft;
     private DcMotor motorRight;
     private DcMotor motorLeft;
+    private StaticHeading pidController;
     private final int TARGET_DEGREE = 110;
+    private  final int REVOLUTION_ENCODER = 288;
     private Intake (){
     }
 
@@ -42,8 +45,15 @@ public class Intake implements Subsystem {
         limitRight = hardwareMap.get(TouchSensor.class, IntakeConstants.LIMIT_RIGHT);
         limitLeft = hardwareMap.get(TouchSensor.class, IntakeConstants.LIMIT_LEFT);
 
-        motorRight.setTargetPosition(TARGET_DEGREE);
-        motorLeft.setTargetPosition(TARGET_DEGREE);
+        motorRight = hardwareMap.get(DcMotor.class, IntakeConstants.MOTOR_RIGHT);
+        motorLeft = hardwareMap.get(DcMotor.class, IntakeConstants.MOTOR_LEFT);
+
+        pidController = new StaticHeading();
+
+        pidController.PIDControl(TARGET_DEGREE, REVOLUTION_ENCODER, true);
+
+        pidController.setPowerMotor(motorRight, REVOLUTION_ENCODER);
+        pidController.setPowerMotor(motorLeft, REVOLUTION_ENCODER);
 
     }
 

@@ -2,6 +2,12 @@ package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+/**
+ * Standard class for using gamepads.
+ * Used as a bridge by other classes that do not have access to gamepads.
+ * The gamepad must be assigned an OpMode.
+ * Contains methods that control all of the gamepad's actions.
+ */
 public class SmartController {
     public Gamepad gamepad;
 

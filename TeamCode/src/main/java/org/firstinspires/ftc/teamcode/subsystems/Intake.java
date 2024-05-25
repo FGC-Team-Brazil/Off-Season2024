@@ -81,12 +81,17 @@ public class Intake implements Subsystem {
             stop();
         }
     }
+    @Override
+    public void start(){
+
+    }
 
     @Override
     public void stop() {
         motorRight.setPower(0);
         motorLeft.setPower(0);
     }
+
 
     // Sensor Methods
     public boolean isLimitRight() {return limitRight.isPressed();}

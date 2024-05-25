@@ -90,6 +90,10 @@ public class LinearSlide implements Subsystem {
         }
 
     }
+    @Override
+    public void start(){
+
+    }
 
     @Override
     public void stop(){

@@ -41,6 +41,10 @@ public class Drivetrain implements Subsystem {
         arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX());
 
     }
+    @Override
+    public void start(){
+
+    }
 
     @Override
     public void stop(){

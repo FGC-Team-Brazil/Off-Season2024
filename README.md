@@ -18,8 +18,8 @@ The robot was designed using Onshape and the code was developed in Android Studi
 
 ### Robot Cad model
 
-The robot cad model can be found [here](https://cad.onshape.com/documents/4abf5f677495fa6cb9ad151c/w/ea4b614198b621c203e9a119/e/47b8e6ba945fea76ff3b7af4)
-[STL Model](cadModels/FGC2019.stl)
+The robot cad model can be found on [OnShape](https://cad.onshape.com/documents/4abf5f677495fa6cb9ad151c/w/ea4b614198b621c203e9a119/e/47b8e6ba945fea76ff3b7af4)
+- [STL Model](cadModels/FGC2019.stl)
 
 ### Prerequisites
 

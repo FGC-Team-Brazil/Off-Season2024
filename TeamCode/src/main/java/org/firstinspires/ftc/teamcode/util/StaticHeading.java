@@ -22,6 +22,7 @@ public class StaticHeading extends LinearOpMode {
     double Kp = PIDConstants.kp;
     double Ki = PIDConstants.ki;
     double Kd = PIDConstants.kd;
+    double kf = PIDConstants.kf;
 
     public double setPoint = 0;
 
@@ -54,7 +55,7 @@ public class StaticHeading extends LinearOpMode {
         double derivative = (error - lastError) / (timer.seconds());
         lastError = error;
         timer.reset();
-        double output = (error * Kp) + (derivative * Kd) + (integralSum * Ki);
+        double output = (error * Kp) + (derivative * Kd) + (integralSum * Ki) + kf;
         return output;
     }
     public double angleWrap(double radians){

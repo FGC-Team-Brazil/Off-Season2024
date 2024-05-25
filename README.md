@@ -1,4 +1,4 @@
-[FGC Team Brazil](logoTeamBrazil.png)
+![FGC Team Brazil](logoTeamBrazil.png)
 # FGC Team Brazil Off-Season 2024
 
 ## Robot Code for the [2019 FGC "Ocean Opportunities" Competition](https://first.global/archive/fgc-2019/)

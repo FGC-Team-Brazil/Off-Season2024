@@ -35,11 +35,11 @@ public class LinearSlide implements Subsystem {
     @Override
     public void execute(SmartController operator) {
         setPower(operator.getLeftStickY(), operator.getLeftStickY());
-        if (operator.getButtonA() != operator.getButtonY()) {
-            while(operator.getButtonY()) {
+        if (operator.isButtonA() != operator.isButtonY()) {
+            while(operator.isButtonY()) {
                 goToHeight(pidController, BARGE_LV3_HEIGHT, getAverageEncoderMeters());
             }
-            while(operator.getButtonA()) {
+            while(operator.isButtonA()) {
                 goToHeight(pidController, BARGE_LV2_HEIGHT, getAverageEncoderMeters());
             }
         }

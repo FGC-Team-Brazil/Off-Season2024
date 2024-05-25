@@ -2,6 +2,12 @@ package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+/**
+ * Standard class for using gamepads.
+ * Used as a bridge by other classes that do not have access to gamepads.
+ * The gamepad must be assigned an OpMode.
+ * Contains methods that control all of the gamepad's actions.
+ */
 public class SmartController {
     public Gamepad gamepad;
 
@@ -25,51 +31,51 @@ public class SmartController {
         return gamepad.right_stick_y;
     }
 
-    public boolean getButtonA() {
+    public boolean isButtonA() {
         return gamepad.a;
     }
 
-    public boolean getButtonB() {
+    public boolean isButtonB() {
         return gamepad.b;
     }
 
-    public boolean getButtonX() {
+    public boolean isButtonX() {
         return gamepad.x;
     }
 
-    public boolean getButtonY() {
+    public boolean isButtonY() {
         return gamepad.y;
     }
 
-    public boolean getButtonDPadUp() {
+    public boolean isButtonDPadUp() {
         return gamepad.dpad_up;
     }
 
-    public boolean getButtonDPadDown() {
+    public boolean isButtonDPadDown() {
         return gamepad.dpad_down;
     }
 
-    public boolean getButtonDPadLeft() {
+    public boolean isButtonDPadLeft() {
         return gamepad.dpad_left;
     }
 
-    public boolean getButtonDPadRight() {
+    public boolean isButtonDPadRight() {
         return gamepad.dpad_right;
     }
 
-    public boolean getButtonLeftBumper() {
+    public boolean isButtonLeftBumper() {
         return gamepad.left_bumper;
     }
 
-    public boolean getButtonRightBumper() {
+    public boolean isButtonRightBumper() {
         return gamepad.right_bumper;
     }
 
-    public boolean getButtonLeftStickButton() {
+    public boolean isButtonLeftStickButton() {
         return gamepad.left_stick_button;
     }
 
-    public boolean getButtonRightStickButton() {
+    public boolean isButtonRightStickButton() {
         return gamepad.right_stick_button;
     }
 
@@ -81,31 +87,36 @@ public class SmartController {
         return gamepad.right_trigger;
     }
 
-    public boolean getButtonStart() {
+    public boolean isLeftTriggerPressed() {
+        return gamepad.left_trigger > 0.3;
+    }
+
+    public boolean isRightTriggerPressed() {
+        return gamepad.right_trigger > 0.3;
+    }
+
+    public boolean isButtonStart() {
         return gamepad.start;
     }
 
-    public boolean getButtonBack() {
+    public boolean isButtonBack() {
         return gamepad.back;
     }
 
-    public boolean getButtonGuide() {
+    public boolean isButtonGuide() {
         return gamepad.guide;
     }
 
-    public void rumble(double leftRumble, double rightRumble) {
-        gamepad.rumble(leftRumble, rightRumble, 0);
+    public void rumble(double leftRumble, double rightRumble, int milliseconds) {
+        gamepad.rumble(leftRumble, rightRumble, milliseconds);
     }
 
-    public void rumble(double rumble) {
+    public void rumble(double rumble, int milliseconds) {
         gamepad.rumble(rumble, rumble, 0);
     }
 
     public void rumbleBlips(int counts) {
         gamepad.rumbleBlips(counts);
     }
-
-    
-
 
 }

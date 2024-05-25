@@ -1,21 +1,24 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 
 import static org.firstinspires.ftc.teamcode.constants.LinearSlideConstants.*;
 import static org.firstinspires.ftc.teamcode.constants.GlobalConstants.*;
 
+import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 
 import org.firstinspires.ftc.teamcode.util.SmartController;
 import org.firstinspires.ftc.teamcode.util.StaticHeading;
 
 public class LinearSlide implements Subsystem {
+
     private static LinearSlide instance;
+
 
     public double currentPIDGoal=0;
     private DcMotor liftMotorRight;
@@ -38,10 +41,10 @@ public class LinearSlide implements Subsystem {
     private double boxSetpointInTicks =0;
 
     public linearMode currentMode = linearMode.NORMAL;
-
-
+    public LinearSlide(){}
     @Override
     public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
+
         liftMotorLeft = hardwareMap.get(DcMotor.class, MOTOR_LEFT);
         liftMotorRight = hardwareMap.get(DcMotor.class, MOTOR_RIGHT);
         boxTiltMotor = hardwareMap.get(DcMotor.class,MOTOR_BOX);
@@ -95,10 +98,11 @@ public class LinearSlide implements Subsystem {
 
     }
 
-    private void setLiftPower(double leftPower, double rightPower){
+    private void setLiftPower(double leftPower, double rightPower) {
         liftMotorLeft.setPower(leftPower);
         liftMotorRight.setPower(rightPower);
     }
+
     private void setBoxMotorPower(double power){
         boxTiltMotor.setPower(power);
     }
@@ -129,13 +133,13 @@ public class LinearSlide implements Subsystem {
 
     }
 
-    private void hangRobot(){
-        setLiftPower(0,0);
+    private void hangRobot() {
+        setLiftPower(0, 0);
         advanceGoal(ROBOT_HANG_HEIGHT);
         liftSetpointInTicks = convertMetersToTicks(currentPIDGoal);
-        setBoxMotorPower(boxTiltPID.PIDControl(boxSetpointInTicks,boxTiltMotor.getCurrentPosition()));
-
+        setBoxMotorPower(boxTiltPID.PIDControl(boxSetpointInTicks, boxTiltMotor.getCurrentPosition()));
     }
+
 
     public static synchronized LinearSlide getInstance(){
         if(instance == null){
@@ -143,6 +147,9 @@ public class LinearSlide implements Subsystem {
         }
         return instance;
     }
+
+
+
 
     // Encoder Methods
     public double convertTicksToMeters(double ticks){

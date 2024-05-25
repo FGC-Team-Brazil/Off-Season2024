@@ -6,6 +6,9 @@ public class IntakeConstants {
     public static final String LIMIT_LEFT = "intake_limitLeft";
     public static final String LIMIT_RIGHT = "intake_limitRight";
 
+    public static final int TARGET_DEGREE = 110;
+
+
     public static class PID {
         public static final double kP = 1.8;
         public static final double kI = 0.0;

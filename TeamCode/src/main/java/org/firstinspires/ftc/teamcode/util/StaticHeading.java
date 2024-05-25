@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode.util;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "Static Heading")
+/**
+ * Standard class for building PIDF control systems.
+ * It uses the constants: Proportional, Integral and Derivative.
+ * In addition to PID, it implements a FeedForward constant.
+ */
 public class StaticHeading {
     public enum Mode {
         POSITION,

@@ -32,8 +32,9 @@ public class Intake {
 
 
             intakeMotorLeft.setTargetPosition(50);
-
         }
+
+
 
 
         public void stop(){

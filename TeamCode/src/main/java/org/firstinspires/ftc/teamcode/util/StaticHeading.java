@@ -1,23 +1,14 @@
 package org.firstinspires.ftc.teamcode.util;
 
-
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import org.firstinspires.ftc.teamcode.constants.PIDConstants;
 
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
-
 @TeleOp(name = "Static Heading")
-public class StaticHeading extends LinearOpMode {
+public class StaticHeading {
+
     double integralSum = 0;
     double Kp = PIDConstants.kp;
     double Ki = PIDConstants.ki;
@@ -25,39 +16,34 @@ public class StaticHeading extends LinearOpMode {
     double kf = PIDConstants.kf;
 
     public double setPoint = 0;
-
-    Intake intake = new Intake();
+    public double output =0;
 
     ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
 
-    public void PIDSetPoint(double setPoint){
-        this.setPoint = setPoint;
-    }
-    @Override
-    public void runOpMode() throws InterruptedException {
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+    //
+    public double PIDControl(double setPoint, double realPosition,boolean angular) {
+        double error = 0;
 
-        double refrenceAngle = Math.toRadians(setPoint);
-        waitForStart();
-
-        while(opModeIsActive()){
-            telemetry.update();
+        if(angular){
+            error = angleWrap(setPoint - realPosition);
+        }else{
+            error = setPoint - realPosition;
         }
-        PIDControl(refrenceAngle,1);
 
-    }
-
-    public double PIDControl(double refrence, double state) {
-        double error = angleWrap(refrence - state);
-        telemetry.addData("Error: ", error);
         integralSum += error * timer.seconds();
         double derivative = (error - lastError) / (timer.seconds());
         lastError = error;
         timer.reset();
         double output = (error * Kp) + (derivative * Kd) + (integralSum * Ki) + kf;
+        this.output = output;
         return output;
     }
+
+    public void setPowerMotor(DcMotor dcMotor){
+        dcMotor.setPower(output);
+    }
+
     public double angleWrap(double radians){
         while(radians > Math.PI){
             radians -= 2 * Math.PI;

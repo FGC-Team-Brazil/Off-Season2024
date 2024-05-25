@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 import org.firstinspires.ftc.teamcode.util.StaticHeading;
 
@@ -16,6 +18,7 @@ public class TeleOpMode extends OpMode {
     private ArrayList<Subsystem> subsystemsOperator;
     private SmartController driver;
     private SmartController operator;
+
 
     private StaticHeading PIDController;
 
@@ -42,7 +45,8 @@ public class TeleOpMode extends OpMode {
         subsystemsOperator.forEach(subsystem -> subsystem.execute(operator));
 
         //Exemple PID
-        PIDController.PIDSetPoint(90);
+        PIDController.PIDControl(1000,20,false);
+
     }
 
     @Override

@@ -1,9 +1,39 @@
-# FGC Team Brazil Off Season 2024 Repository
+logo = "![FGC Team Brazil](logoTeamBrazil.png)"
+# FGC Team Brazil Off-Season 2024
 
-## Robot code made for the 2019 FGC “Ocean Opportunities” competition
+## Robot Code for the [2019 FGC "Ocean Opportunities" Competition](https://first.global/archive/fgc-2019/)
 
-The robot was produced as a form of training for the new members of Team Brazil. As a basis for inspiration, the robot was designed for the 2019 FGC “Ocean Opportunities” competition challenge. The robot was not built, but the code was tested using simulators.
+This repository contains the robot code developed for the 2019 FIRST Global Challenge (FGC) "Ocean Opportunities" competition. The robot was created as a training exercise for new members of Team Brazil. The robot was not physically built.
 
 ### Robot Description
 
-The robot was designed to be a simple robot...
+The robot was designed with the following capabilities:
+
+- Push game pieces into the Reduction Processing Hub.
+- Reload at the Station Guardrail.
+- Score multiple Micro e Macro Pollutants simultaneously.
+- Climb at the end of the match.
+
+The robot was designed using Onshape and the code was developed in Android Studio.
+
+### Prerequisites
+
+Make sure you have the following software installed:
+
+- [Android Studio](https://developer.android.com/studio)
+
+### Getting Started
+
+To get started with the code in this repository, follow the steps below:
+
+1. **Clone the Repository:**
+   ```sh
+   git clone https://github.com/FGC-Team-Brazil/Off-Season2024
+   ```
+2. **Open in Android Studio:**
+   - Launch Android Studio.
+   - Open the project from the cloned repository directory.
+
+### Contact
+
+For any questions or further information, please contact our [email](mailto:fgc.team.br@gmail.com).

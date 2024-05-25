@@ -18,10 +18,6 @@ public class Drivetrain implements Subsystem {
 
     private Drivetrain(){
     }
-    @Override
-    public void start(){
-
-    }
 
     @Override
     public void execute(SmartController driver) {

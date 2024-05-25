@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.util.SmartController;
 
 public interface Subsystem {
     void initialize(HardwareMap hardwareMap, Telemetry telemetry);
-    void start();
     void stop();
 
     void execute(SmartController controller);

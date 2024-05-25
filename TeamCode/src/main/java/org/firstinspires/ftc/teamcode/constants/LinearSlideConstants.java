@@ -15,8 +15,15 @@ public class LinearSlideConstants {
     public static final double DEPOSIT_HEIGHT_MID =0;
     public static final double ROBOT_HANG_HEIGHT =0;
 
+    //pid constants for the linear slide pid
     public static final double kP = 0; //This value is a placeholder
     public static final double kI = 0; //This value is a placeholder
     public static final double kD = 0; //This value is a placeholder
     public static final double kF = 0; //This value is a placeholder
+
+    //pid constants for the hanging motor pid
+    public static final double kPH = 0; //This value is a placeholder
+    public static final double kIH = 0; //This value is a placeholder
+    public static final double kDH = 0; //This value is a placeholder
+    public static final double kFH = 0; //This value is a placeholder
 }

@@ -17,7 +17,6 @@ public class Intake {
         private final DcMotor intakeMotorRight;
         private final DcMotor intakeMotorLeft;
 
-
         public Intake(){
             intakeMotorRight = hardwareMap.get(DcMotor.class, IntakeConstants.INTAKE_RIGTH);
             intakeMotorLeft= hardwareMap.get(DcMotor.class, IntakeConstants.INTAKE_LEFT);
@@ -33,6 +32,7 @@ public class Intake {
 
             intakeMotorLeft.setTargetPosition(50);
         }
+
 
 
 

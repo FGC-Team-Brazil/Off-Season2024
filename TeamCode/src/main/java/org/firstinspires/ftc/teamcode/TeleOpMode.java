@@ -45,7 +45,7 @@ public class TeleOpMode extends OpMode {
         subsystemsOperator.forEach(subsystem -> subsystem.execute(operator));
 
         //Exemple PID
-        PIDController.PIDControl(1000,20,false);
+
 
     }
 

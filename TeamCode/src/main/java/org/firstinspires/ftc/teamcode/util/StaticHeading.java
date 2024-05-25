@@ -21,7 +21,10 @@ public class StaticHeading {
     ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
 
-    //
+    private int revolutionEncoder = 0;
+
+
+
     public double PIDControl(double setPoint, double realPosition,boolean angular) {
         double error = 0;
 
@@ -40,7 +43,10 @@ public class StaticHeading {
         return output;
     }
 
-    public void setPowerMotor(DcMotor dcMotor){
+
+
+    public void setPowerMotor(DcMotor dcMotor,int revolutionEncoder){
+        int i = this.revolutionEncoder / 360;
         dcMotor.setPower(output);
     }
 

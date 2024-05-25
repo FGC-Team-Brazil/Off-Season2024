@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.LinearSlide;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class TeleOpMode extends OpMode {
         this.subsystemsOperator = new ArrayList<Subsystem>();
 
         this.subsystemsDriver.add(Drivetrain.getInstance());
+        this.subsystemsDriver.add(LinearSlide.getInstance());
 
         subsystemsDriver.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));
         subsystemsOperator.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));

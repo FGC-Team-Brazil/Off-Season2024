@@ -7,7 +7,9 @@ import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 
 import static org.firstinspires.ftc.teamcode.constants.LinearSlideConstants.*;
 import static org.firstinspires.ftc.teamcode.constants.GlobalConstants.*;
+
 import org.firstinspires.ftc.teamcode.util.SmartController;
+import org.firstinspires.ftc.teamcode.util.StaticHeading;
 
 public class LinearSlide implements Subsystem {
     private static LinearSlide instance;
@@ -15,10 +17,17 @@ public class LinearSlide implements Subsystem {
     private DcMotor liftMotorRight;
     private DcMotor liftMotorLeft;
 
+    private StaticHeading pidController;
+
     @Override
     public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
         liftMotorLeft = hardwareMap.get(DcMotor.class, MOTOR_LEFT);
         liftMotorRight = hardwareMap.get(DcMotor.class, MOTOR_RIGHT);
+
+        liftMotorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftMotorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        pidController = new StaticHeading(kP, kI, kD, kF);
 
         telemetry.addData("LinearSlide Subsystem", "Initialized");
     }
@@ -28,10 +37,10 @@ public class LinearSlide implements Subsystem {
         setPower(operator.getLeftStickY(), operator.getLeftStickY());
         if (operator.getButtonA() != operator.getButtonY()) {
             while(operator.getButtonY()) {
-                /*goToHeight(heightLv3, );*/
+                goToHeight(pidController, BARGE_LV3_HEIGHT, getAverageEncoderMeters());
             }
             while(operator.getButtonA()) {
-                /*goToHeight(heightLv2, );*/
+                goToHeight(pidController, BARGE_LV2_HEIGHT, getAverageEncoderMeters());
             }
         }
     }
@@ -48,8 +57,8 @@ public class LinearSlide implements Subsystem {
     }
 
     // Command Methods
-    private void goToHeight(double setpoint, double state){
-        // PID to set the slide position in meters with the encoders
+    private void goToHeight(StaticHeading pidController, double setpoint, double state){
+        setPower(pidController.PIDControl(setpoint, state), pidController.PIDControl(setpoint, state));
     }
 
     public static synchronized LinearSlide getInstance(){

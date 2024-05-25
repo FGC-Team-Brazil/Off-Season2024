@@ -8,4 +8,8 @@ public class LinearSlideConstants {
     public static final double PULLEY_CIRCUMFERENCE = 2 * 0.03 * Math.PI;
     public static final double SLIDE_MAX_HEIGHT = 2.5; //This value is a placeholder
 
+    public static final double kP = 0; //This value is a placeholder
+    public static final double kI = 0; //This value is a placeholder
+    public static final double kD = 0; //This value is a placeholder
+    public static final double kF = 0; //This value is a placeholder
 }

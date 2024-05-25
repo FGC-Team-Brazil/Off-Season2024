@@ -16,6 +16,10 @@ The robot was designed with the following capabilities:
 
 The robot was designed using Onshape and the code was developed in Android Studio.
 
+### Robot Cad model
+
+<script src="cadModels/Drivetrain.stl"></script>
+
 ### Prerequisites
 
 Make sure you have the following software installed:

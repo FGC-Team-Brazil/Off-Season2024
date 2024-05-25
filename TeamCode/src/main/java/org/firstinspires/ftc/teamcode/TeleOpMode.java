@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.util.SmartController;
 
 import java.util.ArrayList;
 
-@TeleOp (name = "Teste")
+@TeleOp (name = "TeleOperado",group="Teleoperados Oficiais")
 public class TeleOpMode extends OpMode {
 
     private ArrayList<Subsystem> subsystemsDriver;

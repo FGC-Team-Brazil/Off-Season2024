@@ -3,11 +3,10 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 
 import static org.firstinspires.ftc.teamcode.constants.LinearSlideConstants.*;
 import static org.firstinspires.ftc.teamcode.constants.GlobalConstants.*;
-
+import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 import org.firstinspires.ftc.teamcode.util.StaticHeading;
 

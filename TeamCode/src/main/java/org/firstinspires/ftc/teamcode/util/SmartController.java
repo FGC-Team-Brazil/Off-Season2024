@@ -105,7 +105,4 @@ public class SmartController {
         gamepad.rumbleBlips(counts);
     }
 
-    
-
-
 }

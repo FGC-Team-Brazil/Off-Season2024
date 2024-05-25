@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -23,12 +24,13 @@ public class LinearSlide implements Subsystem {
     public double currentPIDGoal=0;
     private DcMotor liftMotorRight;
     private DcMotor liftMotorLeft;
-    private DcMotor boxTiltMotor;
+    private DcMotor BotHangMotor;
+    private TouchSensor magneticLimit;
 
 
     StaticHeading leftPID;
     StaticHeading rightPID;
-    StaticHeading boxTiltPID;
+    StaticHeading botHangPID;
 
 
     public enum linearMode{
@@ -36,9 +38,9 @@ public class LinearSlide implements Subsystem {
         DEPOSIT,
         HANG
     }
-    private double endHeightGoal =0;
+    public double endHeightGoal =0;
     private double liftSetpointInTicks=0;
-    private double boxSetpointInTicks =0;
+    private double hangSetpointInTicks =0;
 
     public linearMode currentMode = linearMode.NORMAL;
     public LinearSlide(){}
@@ -47,18 +49,19 @@ public class LinearSlide implements Subsystem {
 
         liftMotorLeft = hardwareMap.get(DcMotor.class, MOTOR_LEFT);
         liftMotorRight = hardwareMap.get(DcMotor.class, MOTOR_RIGHT);
-        boxTiltMotor = hardwareMap.get(DcMotor.class,MOTOR_BOX);
+        BotHangMotor = hardwareMap.get(DcMotor.class,MOTOR_HANG);
+        magneticLimit = hardwareMap.get(TouchSensor.class,MAGNETIC_LIMIT);
         leftPID = new StaticHeading(kP,kI,kD,kF);
         rightPID = new StaticHeading(kP,kI,kD,kF);
-        boxTiltPID = new StaticHeading(kPH,kIH,kDH,kFH);
+        botHangPID = new StaticHeading(kPH,kIH,kDH,kFH);
 
         liftMotorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        boxTiltMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BotHangMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         liftMotorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        boxTiltMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BotHangMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         telemetry.addData("LinearSlide Subsystem", "Initialized");
     }
@@ -66,18 +69,21 @@ public class LinearSlide implements Subsystem {
     @Override
     public void execute(SmartController operator) {
 
-        if (operator.isButtonA()){
+        if (operator.isButtonX()){
             endHeightGoal= DEPOSIT_HEIGHT_MID;
         } else if (operator.isButtonY()){
             endHeightGoal = DEPOSIT_HEIGHT_HIGH;
-
+        } else if (operator.isButtonA()){
+            endHeightGoal=0; //bottom position
         }
 
         if (endHeightGoal== DEPOSIT_HEIGHT_MID &&operator.getRightTrigger()>0.9){
             currentMode=linearMode.HANG;
+        } else if (operator.isButtonDPadUp()){
+            currentMode = linearMode.DEPOSIT;
         }
 
-        boolean physicalLimitReached = false||false;//todo replace false's with sensor detecting slide limit conditions
+        boolean physicalLimitReached = magneticLimit.isPressed();//todo replace false's with sensor detecting slide limit conditions
 
         switch (currentMode){
             case NORMAL:
@@ -88,18 +94,14 @@ public class LinearSlide implements Subsystem {
                 hangRobot();
                 break;
         }
-
     }
     @Override
-    public void start(){
-
-    }
+    public void start(){}
 
     @Override
     public void stop(){
         liftMotorRight.setPower(0);
         liftMotorLeft.setPower(0);
-
     }
 
     private void setLiftPower(double leftPower, double rightPower) {
@@ -107,41 +109,33 @@ public class LinearSlide implements Subsystem {
         liftMotorRight.setPower(rightPower);
     }
 
-    private void setBoxMotorPower(double power){
-        boxTiltMotor.setPower(power);
+    private void setHangMotorPower(double power){
+        BotHangMotor.setPower(power);
     }
 
     // Command Methods
-
-
     private void goToHeight(double setpoint, boolean forceStop){
         if (!forceStop) {
             advanceGoal(setpoint);
             liftSetpointInTicks = convertMetersToTicks(currentPIDGoal);
-            switch (currentMode){
-                case DEPOSIT:
-                    boxSetpointInTicks = convertMetersToTicks(getAverageEncoderMeters()+BOX_MOTOR_DEPOSIT_CONTRACTION);
-                case NORMAL:
-                    boxSetpointInTicks = convertMetersToTicks(getAverageEncoderMeters() +BOX_MOTOR_SLACK);
-            }
+            hangSetpointInTicks = convertMetersToTicks(getAverageEncoderMeters() +HANG_MOTOR_SLACK);
+
 
             setLiftPower(leftPID.PIDControl(liftSetpointInTicks,liftMotorLeft.getCurrentPosition()),
                     rightPID.PIDControl(liftSetpointInTicks,liftMotorRight.getCurrentPosition())
             );
-            setBoxMotorPower(boxTiltPID.PIDControl(boxSetpointInTicks,boxTiltMotor.getCurrentPosition()));
+            setHangMotorPower(botHangPID.PIDControl(hangSetpointInTicks,BotHangMotor.getCurrentPosition()));
         } else {
             setLiftPower(0,0);
-            setBoxMotorPower(0);
+            setHangMotorPower(0);
         }
-
-
     }
 
     private void hangRobot() {
         setLiftPower(0, 0);
         advanceGoal(ROBOT_HANG_HEIGHT);
         liftSetpointInTicks = convertMetersToTicks(currentPIDGoal);
-        setBoxMotorPower(boxTiltPID.PIDControl(boxSetpointInTicks, boxTiltMotor.getCurrentPosition()));
+        setHangMotorPower(botHangPID.PIDControl(hangSetpointInTicks, BotHangMotor.getCurrentPosition()));
     }
 
 
@@ -151,9 +145,6 @@ public class LinearSlide implements Subsystem {
         }
         return instance;
     }
-
-
-
 
     // Encoder Methods
     public double convertTicksToMeters(double ticks){
@@ -171,7 +162,6 @@ public class LinearSlide implements Subsystem {
         return convertTicksToMeters((double) (liftMotorLeft.getCurrentPosition() + liftMotorRight.getCurrentPosition()) / 2);
     }
     private void advanceGoal(double setpoint){
-
         if (currentPIDGoal+GOAl_STEP>setpoint&&currentPIDGoal-GOAl_STEP<setpoint){
             currentPIDGoal =setpoint;
         } else{

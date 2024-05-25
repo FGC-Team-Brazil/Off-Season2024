@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -10,26 +11,35 @@ import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 
 public class Drivetrain implements Subsystem {
+
     private static Drivetrain instance;
 
     private DcMotor motorRight;
     private DcMotor motorLeft;
     private IMU imu;
 
-    private Drivetrain(){
-    }
-
-    @Override
-    public void execute(SmartController driver) {
-        arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX());
-
-    }
+    private Drivetrain(){}
 
     @Override
     public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
         motorLeft = hardwareMap.get(DcMotor.class, DrivetrainConstants.MOTOR_LEFT);
         motorRight = hardwareMap.get(DcMotor.class, DrivetrainConstants.MOTOR_RIGHT);
         imu = hardwareMap.get(IMU.class, DrivetrainConstants.IMU);
+
+        motorLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        telemetry.addData("DriveTrain Subsystem", "Initialized");
+    }
+
+    @Override
+    public void execute(SmartController driver) {
+        arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX());
+
     }
 
     @Override

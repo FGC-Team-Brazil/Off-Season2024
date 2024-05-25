@@ -14,14 +14,34 @@ import org.firstinspires.ftc.teamcode.util.StaticHeading;
 public class Intake implements Subsystem {
 
     private static Intake instance;
-    private TouchSensor limitRight;
-    private TouchSensor limitLeft;
+
     private DcMotor motorRight;
     private DcMotor motorLeft;
+    private TouchSensor limitRight;
+    private TouchSensor limitLeft;
+
     private StaticHeading pidController;
+
     private final int TARGET_DEGREE = 110;
     private  final int REVOLUTION_ENCODER = 288;
-    private Intake (){
+
+    private Intake (){}
+
+    @Override
+    public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
+        motorRight = hardwareMap.get(DcMotor.class, IntakeConstants.MOTOR_RIGHT);
+        motorLeft = hardwareMap.get(DcMotor.class, IntakeConstants.MOTOR_LEFT);
+        limitRight = hardwareMap.get(TouchSensor.class, IntakeConstants.LIMIT_RIGHT);
+        limitLeft = hardwareMap.get(TouchSensor.class, IntakeConstants.LIMIT_LEFT);
+
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        pidController = new StaticHeading(IntakeConstants.PID.kP, IntakeConstants.PID.kI, IntakeConstants.PID.kD, IntakeConstants.PID.kF, ANGLE);
+
+        telemetry.addData("Intake Subsystem", "Initialized");
     }
 
     @Override
@@ -65,39 +85,20 @@ public class Intake implements Subsystem {
     }
 
     @Override
-    public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
-        limitRight = hardwareMap.get(TouchSensor.class, IntakeConstants.LIMIT_RIGHT);
-        limitLeft = hardwareMap.get(TouchSensor.class, IntakeConstants.LIMIT_LEFT);
-
-        motorRight = hardwareMap.get(DcMotor.class, IntakeConstants.MOTOR_RIGHT);
-        motorLeft = hardwareMap.get(DcMotor.class, IntakeConstants.MOTOR_LEFT);
-        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        pidController = new StaticHeading(IntakeConstants.PID.kP, IntakeConstants.PID.kI, IntakeConstants.PID.kD, IntakeConstants.PID.kF, ANGLE);
-    }
-
-    @Override
-    public void stop(){
+    public void stop() {
         motorRight.setPower(0);
         motorLeft.setPower(0);
     }
 
-    public boolean isLimitRight(){
-        return limitRight.isPressed();
-    }
+    // Sensor Methods
+    public boolean isLimitRight() {return limitRight.isPressed();}
+    public boolean isLimitLeft() {return limitLeft.isPressed();}
 
-    public boolean isLimitLeft(){
-        return limitLeft.isPressed();
-    }
-
-    public static synchronized Intake getInstance(){
+    // Singleton Instance
+    public static synchronized Intake getInstance() {
         if(instance == null){
             instance = new Intake();
         }
         return instance;
     }
-
 }

@@ -45,38 +45,19 @@ public class Intake implements Subsystem {
     @Override
     public void execute(SmartController operator) {
         pidController.PIDControl(TARGET_DEGREE, motorLeft.getCurrentPosition());
-        if(operator.isButtonLeftBumper()){
-            // If the left bumper is pressed, the left intake will open
-            motorRight.setPower(0);
-            pidController.setPowerMotor(motorLeft, (int) CORE_HEX_TICKS_PER_REVOLUTION);
-        } else if(operator.isButtonRightBumper()){
-            // If the right bumper is pressed, the right intake will open
-            pidController.setPowerMotor(motorRight, (int) CORE_HEX_TICKS_PER_REVOLUTION);
-            motorLeft.setPower(0);
-        } else if (operator.isLeftTriggerPressed() && !isLimitLeft()) {
-            // If the left trigger is pressed, the left intake will close
-            motorLeft.setPower(operator.getLeftTrigger());
-        } else if(operator.isLeftTriggerPressed() && isLimitLeft()){
-            // If the left limit is pressed, the left encoder will reset
-            motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            operator.rumble(1,0, 200);
-        } else if (operator.isRightTriggerPressed() && !isLimitRight()) {
-            // If the right trigger is pressed, the right intake will close
-            motorRight.setPower(operator.getRightTrigger());
-        } else if(operator.isRightTriggerPressed() && isLimitRight()){
-            // If the right limit is pressed, the right encoder will reset
-            motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            operator.rumble(0,1, 200);
-        } else if (operator.isButtonLeftBumper() && operator.isButtonRightBumper()){
-            // If both bumpers are pressed, the intake will open
-            pidController.setPowerMotor(motorLeft, (int) CORE_HEX_TICKS_PER_REVOLUTION);
-            pidController.setPowerMotor(motorRight, (int) CORE_HEX_TICKS_PER_REVOLUTION);
-        } else if(operator.isRightTriggerPressed() && !isLimitRight() && operator.isLeftTriggerPressed() && !isLimitLeft()){
-            // If both triggers are pressed, the intake will close
-            motorRight.setPower(operator.getRightTrigger());
-            motorLeft.setPower(operator.getLeftTrigger());
+
+        if (operator.isButtonLeftBumper() && operator.isButtonRightBumper()) {
+            openBothIntakes();
+        } else if (operator.isButtonLeftBumper()) {
+            openLeftIntake();
+        } else if (operator.isButtonRightBumper()) {
+            openRightIntake();
+        } else if (operator.isLeftTriggerPressed() && operator.isRightTriggerPressed()) {
+            closeBothIntakes(operator);
+        } else if (operator.isLeftTriggerPressed()) {
+            handleLeftTrigger(operator);
+        } else if (operator.isRightTriggerPressed()) {
+            handleRightTrigger(operator);
         } else {
             stop();
         }
@@ -92,6 +73,52 @@ public class Intake implements Subsystem {
         motorLeft.setPower(0);
     }
 
+    private void openLeftIntake() {
+        motorRight.setPower(0);
+        pidController.setPowerMotor(motorLeft, (int) CORE_HEX_TICKS_PER_REVOLUTION);
+    }
+
+    private void openRightIntake() {
+        motorLeft.setPower(0);
+        pidController.setPowerMotor(motorRight, (int) CORE_HEX_TICKS_PER_REVOLUTION);
+    }
+
+    private void openBothIntakes() {
+        pidController.setPowerMotor(motorLeft, (int) CORE_HEX_TICKS_PER_REVOLUTION);
+        pidController.setPowerMotor(motorRight, (int) CORE_HEX_TICKS_PER_REVOLUTION);
+    }
+
+    private void closeBothIntakes(SmartController operator) {
+        if (!isLimitRight()) {
+            motorRight.setPower(operator.getRightTrigger());
+        }
+        if (!isLimitLeft()) {
+            motorLeft.setPower(operator.getLeftTrigger());
+        }
+    }
+
+    private void handleLeftTrigger(SmartController operator) {
+        if (!isLimitLeft()) {
+            motorLeft.setPower(operator.getLeftTrigger());
+        } else {
+            resetEncoder(motorLeft);
+            operator.rumble(1, 0, 200);
+        }
+    }
+
+    private void handleRightTrigger(SmartController operator) {
+        if (!isLimitRight()) {
+            motorRight.setPower(operator.getRightTrigger());
+        } else {
+            resetEncoder(motorRight);
+            operator.rumble(0, 1, 200);
+        }
+    }
+
+    private void resetEncoder(DcMotor motor) {
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 
     // Sensor Methods
     public boolean isLimitRight() {return limitRight.isPressed();}

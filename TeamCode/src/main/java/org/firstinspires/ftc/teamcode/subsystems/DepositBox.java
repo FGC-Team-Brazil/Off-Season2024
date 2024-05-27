@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.constants.LinearSlideConstants;
+import org.firstinspires.ftc.teamcode.util.ButtonUtils;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 
 import static org.firstinspires.ftc.teamcode.constants.DepositBoxConstants.*;
@@ -47,12 +48,13 @@ public class DepositBox implements Subsystem {
 
     @Override
     public void execute(SmartController operator) {
+        ButtonUtils.whileHeld(operator.isButtonDPadUp())
+                .and(LinearSlide.getInstance().currentPIDGoal >= LinearSlideConstants.DEPOSIT_HEIGHT_MID - 0.1)
+                .then(() -> endHeightGoal = BOX_DEPOSIT_ANGLE);
 
-        if (operator.isButtonDPadUp() && LinearSlide.getInstance().currentPIDGoal >= LinearSlideConstants.DEPOSIT_HEIGHT_MID - 0.1) {
-            endHeightGoal = BOX_DEPOSIT_ANGLE;
-        } else if (operator.isButtonDPadDown()) {
-            endHeightGoal = 0; //retract box
-        }
+        ButtonUtils.whileHeld(operator.isButtonDPadDown())
+                .then(() -> endHeightGoal = 0);
+
         advanceGoal(endHeightGoal);
         DepositPID.PIDControl(angleDesiredToTicks(currentPIDGoal), DepositMotor.getCurrentPosition());
     }

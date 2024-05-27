@@ -13,6 +13,7 @@ import static org.firstinspires.ftc.teamcode.constants.GlobalConstants.*;
 
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 
+import org.firstinspires.ftc.teamcode.util.ButtonUtils;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 import org.firstinspires.ftc.teamcode.util.StaticHeading;
 
@@ -73,19 +74,22 @@ public class LinearSlide implements Subsystem {
     @Override
     public void execute(SmartController operator) {
 
-        if (operator.isButtonX()) {
-            endHeightGoal = DEPOSIT_HEIGHT_MID;
-        } else if (operator.isButtonY()) {
-            endHeightGoal = DEPOSIT_HEIGHT_HIGH;
-        } else if (operator.isButtonA()) {
-            endHeightGoal = 0; //bottom position
-        }
+        ButtonUtils.whileHeld(operator.isButtonX())
+                .then(() -> endHeightGoal = DEPOSIT_HEIGHT_MID);
 
-        if (endHeightGoal == DEPOSIT_HEIGHT_MID && operator.getRightTrigger() > 0.9) {
-            currentMode = linearMode.HANG;
-        } else if (operator.isButtonDPadUp()) {
-            currentMode = linearMode.DEPOSIT;
-        }
+        ButtonUtils.whileHeld(operator.isButtonY())
+                .then(() -> endHeightGoal = DEPOSIT_HEIGHT_HIGH);
+
+        ButtonUtils.whileHeld(operator.isButtonA())
+                .then(() -> endHeightGoal = 0);
+
+        ButtonUtils.whileHeld(operator.isRightTriggerPressed())
+                .and(endHeightGoal == DEPOSIT_HEIGHT_MID)
+                .then(() -> currentMode = linearMode.HANG);
+
+        ButtonUtils.whileHeld(operator.isButtonDPadUp())
+                .then(() -> currentMode = linearMode.DEPOSIT);
+
 
         boolean physicalLimitReached = magneticLimit.isPressed();//todo replace false's with sensor detecting slide limit conditions
 

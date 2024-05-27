@@ -88,11 +88,11 @@ public class SmartController {
     }
 
     public boolean isLeftTriggerPressed() {
-        return gamepad.left_trigger > 0.3;
+        return gamepad.left_trigger > 0.9;
     }
 
     public boolean isRightTriggerPressed() {
-        return gamepad.right_trigger > 0.3;
+        return gamepad.right_trigger > 0.9;
     }
 
     public boolean isButtonStart() {

@@ -11,6 +11,7 @@ import static org.firstinspires.ftc.teamcode.constants.IntakeConstants.*;
 import static org.firstinspires.ftc.teamcode.constants.GlobalConstants.*;
 
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
+import org.firstinspires.ftc.teamcode.util.ButtonUtils;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 import org.firstinspires.ftc.teamcode.util.StaticHeading;
 
@@ -49,21 +50,26 @@ public class Intake implements Subsystem {
     public void execute(SmartController operator) {
         pidController.PIDControl(TARGET_DEGREE, motorLeft.getCurrentPosition());
 
-        if (operator.isButtonLeftBumper() && operator.isButtonRightBumper()) {
-            openBothIntakes();
-        } else if (operator.isButtonLeftBumper()) {
-            openLeftIntake();
-        } else if (operator.isButtonRightBumper()) {
-            openRightIntake();
-        } else if (operator.isLeftTriggerPressed() && operator.isRightTriggerPressed()) {
-            closeBothIntakes(operator);
-        } else if (operator.isLeftTriggerPressed()) {
-            handleLeftTrigger(operator);
-        } else if (operator.isRightTriggerPressed()) {
-            handleRightTrigger(operator);
-        } else {
-            stop();
-        }
+        ButtonUtils.whileHeld(operator.isButtonLeftBumper())
+                .and(operator.isButtonRightBumper())
+                .then(this::openBothIntakes);
+
+        ButtonUtils.whileHeld(operator.isButtonLeftBumper())
+                .then(this::openLeftIntake);
+
+        ButtonUtils.whileHeld(operator.isButtonRightBumper())
+                .then(this::openRightIntake);
+
+        ButtonUtils.whileHeld(operator.isLeftTriggerPressed())
+                .and(operator.isRightTriggerPressed())
+                .then(() -> closeBothIntakes(operator));
+
+        ButtonUtils.whileHeld(operator.isLeftTriggerPressed())
+                .then(() -> handleLeftTrigger(operator));
+
+        ButtonUtils.whileHeld(operator.isRightTriggerPressed())
+                .then(() -> handleRightTrigger(operator));
+
     }
 
     @Override

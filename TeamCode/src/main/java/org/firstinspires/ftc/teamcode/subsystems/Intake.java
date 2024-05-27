@@ -75,17 +75,17 @@ public class Intake implements Subsystem {
 
     private void openLeftIntake() {
         motorRight.setPower(0);
-        pidController.setPowerMotor(motorLeft, (int) CORE_HEX_TICKS_PER_REVOLUTION);
+        pidController.setPowerMotor(motorLeft, CORE_HEX_TICKS_PER_REVOLUTION);
     }
 
     private void openRightIntake() {
         motorLeft.setPower(0);
-        pidController.setPowerMotor(motorRight, (int) CORE_HEX_TICKS_PER_REVOLUTION);
+        pidController.setPowerMotor(motorRight, CORE_HEX_TICKS_PER_REVOLUTION);
     }
 
     private void openBothIntakes() {
-        pidController.setPowerMotor(motorLeft, (int) CORE_HEX_TICKS_PER_REVOLUTION);
-        pidController.setPowerMotor(motorRight, (int) CORE_HEX_TICKS_PER_REVOLUTION);
+        pidController.setPowerMotor(motorLeft, CORE_HEX_TICKS_PER_REVOLUTION);
+        pidController.setPowerMotor(motorRight, CORE_HEX_TICKS_PER_REVOLUTION);
     }
 
     private void closeBothIntakes(SmartController operator) {

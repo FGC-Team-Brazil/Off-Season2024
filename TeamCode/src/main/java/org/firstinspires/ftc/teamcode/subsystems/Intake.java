@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import static org.firstinspires.ftc.teamcode.util.StaticHeading.Mode.ANGLE;
 import static org.firstinspires.ftc.teamcode.constants.IntakeConstants.*;
 import static org.firstinspires.ftc.teamcode.constants.GlobalConstants.*;
+
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 import org.firstinspires.ftc.teamcode.util.StaticHeading;
@@ -23,7 +25,8 @@ public class Intake implements Subsystem {
 
     private StaticHeading pidController;
 
-    private Intake (){}
+    private Intake() {
+    }
 
     @Override
     public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -62,8 +65,9 @@ public class Intake implements Subsystem {
             stop();
         }
     }
+
     @Override
-    public void start(){
+    public void start() {
 
     }
 
@@ -121,12 +125,17 @@ public class Intake implements Subsystem {
     }
 
     // Sensor Methods
-    public boolean isLimitRight() {return limitRight.isPressed();}
-    public boolean isLimitLeft() {return limitLeft.isPressed();}
+    public boolean isLimitRight() {
+        return limitRight.isPressed();
+    }
+
+    public boolean isLimitLeft() {
+        return limitLeft.isPressed();
+    }
 
     // Singleton Instance
     public static synchronized Intake getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new Intake();
         }
         return instance;

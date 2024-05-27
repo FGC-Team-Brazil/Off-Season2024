@@ -11,13 +11,14 @@ import org.firstinspires.ftc.teamcode.util.SmartController;
 
 import java.util.ArrayList;
 
-@TeleOp (name = "TeleOperado",group="Teleoperados Oficiais")
+@TeleOp(name = "TeleOperado", group = "Teleoperados Oficiais")
 public class TeleOpMode extends OpMode {
 
     private ArrayList<Subsystem> subsystemsDriver;
     private ArrayList<Subsystem> subsystemsOperator;
     private SmartController driver;
     private SmartController operator;
+
     @Override
     public void init() {
         this.driver = new SmartController(gamepad1);
@@ -35,8 +36,9 @@ public class TeleOpMode extends OpMode {
         subsystemsOperator.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));
         telemetry.update();
     }
+
     @Override
-    public void start(){
+    public void start() {
         subsystemsDriver.forEach(subsystem -> subsystem.execute(driver));
         subsystemsOperator.forEach(subsystem -> subsystem.execute(operator));
         telemetry.update();

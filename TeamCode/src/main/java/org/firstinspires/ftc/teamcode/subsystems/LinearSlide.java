@@ -45,7 +45,7 @@ public class LinearSlide implements Subsystem {
 
     public linearMode currentMode = linearMode.NORMAL;
 
-    public LinearSlide() {
+    private LinearSlide() {
     }
 
     @Override
@@ -144,14 +144,6 @@ public class LinearSlide implements Subsystem {
         setHangMotorPower(botHangPID.PIDControl(hangSetpointInTicks, BotHangMotor.getCurrentPosition()));
     }
 
-
-    public static synchronized LinearSlide getInstance() {
-        if (instance == null) {
-            instance = new LinearSlide();
-        }
-        return instance;
-    }
-
     // Encoder Methods
     public double convertTicksToMeters(double ticks) {
         return (((ticks / HD_HEX_TICKS_PER_REVOLUTION) / MOTORS_REDUCTION) * PULLEY_CIRCUMFERENCE);
@@ -179,5 +171,12 @@ public class LinearSlide implements Subsystem {
                 currentPIDGoal += GOAl_STEP;
             }
         }
+    }
+
+    public static synchronized LinearSlide getInstance() {
+        if (instance == null) {
+            instance = new LinearSlide();
+        }
+        return instance;
     }
 }

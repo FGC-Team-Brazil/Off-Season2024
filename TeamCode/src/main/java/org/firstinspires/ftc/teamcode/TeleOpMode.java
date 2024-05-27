@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
+import org.firstinspires.ftc.teamcode.subsystems.DepositBox;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.LinearSlide;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
@@ -31,6 +32,7 @@ public class TeleOpMode extends OpMode {
 
         this.subsystemsOperator.add(LinearSlide.getInstance());
         this.subsystemsOperator.add(Intake.getInstance());
+        this.subsystemsOperator.add(DepositBox.getInstance());
 
         subsystemsDriver.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));
         subsystemsOperator.forEach(subsystem -> subsystem.initialize(hardwareMap, telemetry));

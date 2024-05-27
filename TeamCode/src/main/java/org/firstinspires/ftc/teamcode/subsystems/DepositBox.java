@@ -20,6 +20,11 @@ public class DepositBox implements Subsystem {
     DcMotor DepositMotor;
     StaticHeading DepositPID;
 
+    private static DepositBox instance;
+
+    private DepositBox() {
+    }
+
     @Override
     public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
         DepositMotor = hardwareMap.get(DcMotor.class, DEPOSIT_MOTOR);
@@ -67,4 +72,12 @@ public class DepositBox implements Subsystem {
     private double angleDesiredToTicks(double angle) {
         return Math.round(angle / 360 * REDUCTION * CORE_HEX_TICKS_PER_REVOLUTION);
     }
+
+    public static DepositBox getInstance() {
+        if (instance == null) {
+            instance = new DepositBox();
+        }
+        return instance;
+    }
+
 }

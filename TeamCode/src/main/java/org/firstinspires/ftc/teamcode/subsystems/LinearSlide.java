@@ -26,6 +26,8 @@ public class LinearSlide implements Subsystem {
     private DcMotor liftMotorLeft;
     private DcMotor BotHangMotor;
     private TouchSensor magneticLimit;
+    private double slideDeadBand = 0.3;
+    private boolean stopPID = false;
 
 
     StaticHeading leftPID;
@@ -82,25 +84,34 @@ public class LinearSlide implements Subsystem {
         ButtonListener.whileTrue(operator.isButtonA())
                 .run(() -> endHeightGoal = 0);
 
-        ButtonListener.whileTrue(operator.isRightTriggerPressed())
-                .and(endHeightGoal == DEPOSIT_HEIGHT_MID)
-                .run(() -> currentMode = linearMode.HANG);
+        if(!operator.isButtonY() && !operator.isButtonX() && !operator.isButtonA()) {
+            stopPID = true;
+        }
 
         ButtonListener.whileTrue(operator.isButtonDPadUp())
                 .run(() -> currentMode = linearMode.DEPOSIT);
 
 
-        boolean physicalLimitReached = magneticLimit.isPressed();//todo replace false's with sensor detecting slide limit conditions
+        boolean physicalLimitReached = magneticLimit.isPressed();
 
-        switch (currentMode) {
-            case NORMAL:
-            case DEPOSIT:
-                goToHeight(endHeightGoal, physicalLimitReached);
-                break;
-            case HANG:
-                hangRobot();
-                break;
+        if (Math.abs(operator.getRightStickY()) > slideDeadBand) {
+            currentMode = linearMode.HANG;
         }
+
+        if (Math.abs(operator.getLeftStickY()) > slideDeadBand){
+            controlSlide(operator.getLeftStickY());
+        } else {
+            switch (currentMode) {
+                case NORMAL:
+                case DEPOSIT:
+                    goToHeight(endHeightGoal, physicalLimitReached);
+                    break;
+                case HANG:
+                    hangRobot();
+                    break;
+            }
+        }
+
     }
 
     @Override
@@ -122,9 +133,15 @@ public class LinearSlide implements Subsystem {
         BotHangMotor.setPower(power);
     }
 
+    private void controlSlide(double slidePower) {
+        if (slidePower > slideDeadBand) {
+            setLiftPower(slidePower, slidePower);
+        }
+    }
+
     // Command Methods
     private void goToHeight(double setpoint, boolean forceStop) {
-        if (!forceStop) {
+        if (!forceStop || !stopPID) {
             advanceGoal(setpoint);
             liftSetpointInTicks = convertMetersToTicks(currentPIDGoal);
             hangSetpointInTicks = convertMetersToTicks(getAverageEncoderMeters() + HANG_MOTOR_SLACK);

@@ -49,24 +49,51 @@ public class Intake implements Subsystem {
 
         ButtonListener.whileTrue(operator.isButtonLeftBumper())
                 .and(operator.isButtonRightBumper())
-                .run(this::openBothIntakes);
+                .run(() -> {
+                    pidController.setPowerMotor(motorLeft, CORE_HEX_TICKS_PER_REVOLUTION);
+                    pidController.setPowerMotor(motorRight, CORE_HEX_TICKS_PER_REVOLUTION);
+                });
 
         ButtonListener.whileTrue(operator.isButtonLeftBumper())
-                .run(this::openLeftIntake);
+                .run(() -> {
+                    motorRight.setPower(0);
+                    pidController.setPowerMotor(motorLeft, CORE_HEX_TICKS_PER_REVOLUTION);
+                });
 
         ButtonListener.whileTrue(operator.isButtonRightBumper())
-                .run(this::openRightIntake);
+                .run(() -> {
+                    motorLeft.setPower(0);
+                    pidController.setPowerMotor(motorRight, CORE_HEX_TICKS_PER_REVOLUTION);
+                });
 
         ButtonListener.whileTrue(operator.isLeftTriggerPressed())
                 .and(operator.isRightTriggerPressed())
-                .run(() -> closeBothIntakes(operator));
+                .and(!isLimitRight())
+                .and(!isLimitLeft())
+                .run(() -> {
+                    motorRight.setPower(operator.getRightTrigger());
+                    motorLeft.setPower(operator.getLeftTrigger());
+                });
 
         ButtonListener.whileTrue(operator.isLeftTriggerPressed())
-                .run(() -> handleLeftTrigger(operator));
+                .and(!isLimitLeft())
+                .run(() -> {
+                    motorLeft.setPower(operator.getLeftTrigger());
+                }, () -> {
+                    resetEncoder(motorLeft);
+                    operator.rumble(1, 0, 200);
+                });
 
         ButtonListener.whileTrue(operator.isRightTriggerPressed())
-                .run(() -> handleRightTrigger(operator));
+                .and(!isLimitRight())
+                .run(() -> {
+                    motorRight.setPower(operator.getRightTrigger());
+                }, () -> {
+                    resetEncoder(motorRight);
+                    operator.rumble(0, 1, 200);
+                });
 
+        stop();
     }
 
     @Override
@@ -78,48 +105,6 @@ public class Intake implements Subsystem {
     public void stop() {
         motorRight.setPower(0);
         motorLeft.setPower(0);
-    }
-
-    private void openLeftIntake() {
-        motorRight.setPower(0);
-        pidController.setPowerMotor(motorLeft, CORE_HEX_TICKS_PER_REVOLUTION);
-    }
-
-    private void openRightIntake() {
-        motorLeft.setPower(0);
-        pidController.setPowerMotor(motorRight, CORE_HEX_TICKS_PER_REVOLUTION);
-    }
-
-    private void openBothIntakes() {
-        pidController.setPowerMotor(motorLeft, CORE_HEX_TICKS_PER_REVOLUTION);
-        pidController.setPowerMotor(motorRight, CORE_HEX_TICKS_PER_REVOLUTION);
-    }
-
-    private void closeBothIntakes(SmartController operator) {
-        if (!isLimitRight()) {
-            motorRight.setPower(operator.getRightTrigger());
-        }
-        if (!isLimitLeft()) {
-            motorLeft.setPower(operator.getLeftTrigger());
-        }
-    }
-
-    private void handleLeftTrigger(SmartController operator) {
-        if (!isLimitLeft()) {
-            motorLeft.setPower(operator.getLeftTrigger());
-        } else {
-            resetEncoder(motorLeft);
-            operator.rumble(1, 0, 200);
-        }
-    }
-
-    private void handleRightTrigger(SmartController operator) {
-        if (!isLimitRight()) {
-            motorRight.setPower(operator.getRightTrigger());
-        } else {
-            resetEncoder(motorRight);
-            operator.rumble(0, 1, 200);
-        }
     }
 
     private void resetEncoder(DcMotor motor) {

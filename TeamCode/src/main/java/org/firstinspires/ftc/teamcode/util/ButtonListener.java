@@ -98,7 +98,12 @@ public class ButtonListener {
          * @param runnable the Runnable to run
          */
         public void run(Runnable runnable) {
-            this.run(runnable, Optional.empty());
+            if (ButtonListenerInstance.button) {
+                runnable.run();
+            }
+
+            ButtonListenerInstance.buttonList.clear();
+            ButtonListenerInstance.button = false;
         }
 
         /**
@@ -106,13 +111,13 @@ public class ButtonListener {
          * <p>
          * Its possible pass a lambda expression or a method reference.
          * @param runnable the Runnable to run if the conditions are true
-         * @param elseRunnableOptional the Runnable to run if the conditions are false
+         * @param elseRunnable the Runnable to run if the conditions are false
          */
-        public void run(Runnable runnable, Optional<Runnable> elseRunnableOptional) {
+        public void run(Runnable runnable, Runnable elseRunnable) {
             if (ButtonListenerInstance.button) {
                 runnable.run();
             } else {
-                elseRunnableOptional.ifPresent(Runnable::run);
+                elseRunnable.run();
             }
 
             ButtonListenerInstance.buttonList.clear();

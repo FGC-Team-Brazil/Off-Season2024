@@ -20,6 +20,8 @@ public class Drivetrain implements Subsystem {
     private DcMotor motorLeft;
     private IMU imu;
 
+    private double triggerDeadBand = 0.3;
+
     private Drivetrain() {
     }
 
@@ -41,7 +43,7 @@ public class Drivetrain implements Subsystem {
 
     @Override
     public void execute(SmartController driver) {
-        arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX());
+        arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX(), driver.getLeftTrigger(), driver.getRightTrigger());
     }
 
     @Override
@@ -55,9 +57,16 @@ public class Drivetrain implements Subsystem {
         motorLeft.setPower(0);
     }
 
-    public void arcadeDrive(double xSpeed, double zRotation) {
-        double xSpeedLimited = Math.max(-1.0, Math.min(1.0, xSpeed));
-        double zRotationLimited = Math.max(-1.0, Math.min(1.0, zRotation));
+    public void arcadeDrive(double xSpeed, double zRotation, double slowMode, double fastMode) {
+        double limiter = 0.8;
+        if (slowMode > triggerDeadBand &&  fastMode < triggerDeadBand){
+            limiter = 0.6;
+        } else if(fastMode > triggerDeadBand && slowMode < triggerDeadBand) {
+            limiter = 1.0;
+        }
+
+        double xSpeedLimited = Math.max(-limiter, Math.min(limiter, xSpeed));
+        double zRotationLimited = Math.max(limiter, Math.min(limiter, zRotation));
 
         double leftSpeed = xSpeedLimited - zRotationLimited;
         double rightSpeed = xSpeedLimited + zRotationLimited;

@@ -16,14 +16,11 @@ import org.firstinspires.ftc.teamcode.util.SmartController;
 import org.firstinspires.ftc.teamcode.util.StaticHeading;
 
 public class Intake implements Subsystem {
-
     private static Intake instance;
-
     private DcMotor motorRight;
     private DcMotor motorLeft;
     private TouchSensor limitRight;
     private TouchSensor limitLeft;
-
     private StaticHeading pidController;
 
     private Intake() {

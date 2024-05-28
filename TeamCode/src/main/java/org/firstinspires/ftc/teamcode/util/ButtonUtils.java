@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ButtonUtils {
 
@@ -57,8 +58,14 @@ public class ButtonUtils {
         }
 
         public void then(Runnable runnable) {
+            this.then(runnable, Optional.empty());
+        }
+
+        public void then(Runnable runnable, Optional<Runnable> elseRunnableOptional) {
             if (buttonUtilsInstance.button) {
                 runnable.run();
+            } else {
+                elseRunnableOptional.ifPresent(Runnable::run);
             }
 
             buttonUtilsInstance.buttonList.clear();

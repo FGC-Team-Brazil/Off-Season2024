@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.constants.GlobalConstants;
+
 /**
  * Standard class for using gamepads.
  * Used as a bridge by other classes that do not have access to gamepads.
@@ -88,11 +90,11 @@ public class SmartController {
     }
 
     public boolean isLeftTriggerPressed() {
-        return gamepad.left_trigger > 0.9;
+        return gamepad.left_trigger > GlobalConstants.Controller.TRIGGER_PRESSED_THRESHOLD_VALUE;
     }
 
     public boolean isRightTriggerPressed() {
-        return gamepad.right_trigger > 0.9;
+        return gamepad.right_trigger > GlobalConstants.Controller.TRIGGER_PRESSED_THRESHOLD_VALUE;
     }
 
     public boolean isButtonStart() {

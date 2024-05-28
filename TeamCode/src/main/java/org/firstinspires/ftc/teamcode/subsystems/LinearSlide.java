@@ -130,10 +130,10 @@ public class LinearSlide implements Subsystem {
             hangSetpointInTicks = convertMetersToTicks(getAverageEncoderMeters() + HANG_MOTOR_SLACK);
 
 
-            setLiftPower(leftPID.PIDControl(liftSetpointInTicks, liftMotorLeft.getCurrentPosition()),
-                    rightPID.PIDControl(liftSetpointInTicks, liftMotorRight.getCurrentPosition())
+            setLiftPower(leftPID.calculate(liftSetpointInTicks, liftMotorLeft.getCurrentPosition()),
+                    rightPID.calculate(liftSetpointInTicks, liftMotorRight.getCurrentPosition())
             );
-            setHangMotorPower(botHangPID.PIDControl(hangSetpointInTicks, BotHangMotor.getCurrentPosition()));
+            setHangMotorPower(botHangPID.calculate(hangSetpointInTicks, BotHangMotor.getCurrentPosition()));
         } else {
             setLiftPower(0, 0);
             setHangMotorPower(0);
@@ -144,7 +144,7 @@ public class LinearSlide implements Subsystem {
         setLiftPower(0, 0);
         advanceGoal(ROBOT_HANG_HEIGHT);
         liftSetpointInTicks = convertMetersToTicks(currentPIDGoal);
-        setHangMotorPower(botHangPID.PIDControl(hangSetpointInTicks, BotHangMotor.getCurrentPosition()));
+        setHangMotorPower(botHangPID.calculate(hangSetpointInTicks, BotHangMotor.getCurrentPosition()));
     }
 
     // Encoder Methods

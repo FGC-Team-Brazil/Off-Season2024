@@ -21,7 +21,7 @@ public class Intake implements Subsystem {
     private DcMotor motorLeft;
     private TouchSensor limitRight;
     private TouchSensor limitLeft;
-    private StaticHeading pidController;
+    private StaticHeading PIDController;
 
     private Intake() {
     }
@@ -38,32 +38,32 @@ public class Intake implements Subsystem {
         motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        pidController = new StaticHeading(PID.kP, PID.kI, PID.kD, PID.kF, ANGLE);
+        PIDController = new StaticHeading(PID.kP, PID.kI, PID.kD, PID.kF, ANGLE);
 
         telemetry.addData("Intake Subsystem", "Initialized");
     }
 
     @Override
     public void execute(SmartController operator) {
-        pidController.PIDControl(TARGET_DEGREE, motorLeft.getCurrentPosition());
+        PIDController.calculate(TARGET_DEGREE, motorLeft.getCurrentPosition());
 
         ButtonListener.whileTrue(operator.isButtonLeftBumper())
                 .and(operator.isButtonRightBumper())
                 .run(() -> {
-                    pidController.setPowerMotor(motorLeft, CORE_HEX_TICKS_PER_REVOLUTION);
-                    pidController.setPowerMotor(motorRight, CORE_HEX_TICKS_PER_REVOLUTION);
+                    PIDController.setPowerMotor(motorLeft, CORE_HEX_TICKS_PER_REVOLUTION);
+                    PIDController.setPowerMotor(motorRight, CORE_HEX_TICKS_PER_REVOLUTION);
                 });
 
         ButtonListener.whileTrue(operator.isButtonLeftBumper())
                 .run(() -> {
                     motorRight.setPower(0);
-                    pidController.setPowerMotor(motorLeft, CORE_HEX_TICKS_PER_REVOLUTION);
+                    PIDController.setPowerMotor(motorLeft, CORE_HEX_TICKS_PER_REVOLUTION);
                 });
 
         ButtonListener.whileTrue(operator.isButtonRightBumper())
                 .run(() -> {
                     motorLeft.setPower(0);
-                    pidController.setPowerMotor(motorRight, CORE_HEX_TICKS_PER_REVOLUTION);
+                    PIDController.setPowerMotor(motorRight, CORE_HEX_TICKS_PER_REVOLUTION);
                 });
 
         ButtonListener.whileTrue(operator.isLeftTriggerPressed())

@@ -56,7 +56,7 @@ public class DepositBox implements Subsystem {
                 .run(() -> endHeightGoal = 0);
 
         advanceGoal(endHeightGoal);
-        DepositPID.PIDControl(angleDesiredToTicks(currentPIDGoal), DepositMotor.getCurrentPosition());
+        DepositPID.calculate(angleDesiredToTicks(currentPIDGoal), DepositMotor.getCurrentPosition());
     }
 
     private void advanceGoal(double setpoint) {

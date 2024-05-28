@@ -50,7 +50,7 @@ public class StaticHeading {
         this.actualMode = mode;
     }
 
-    public double PIDControl(double setPoint, double realPosition) {
+    public double calculate(double setPoint, double realPosition) {
         this.setPoint = setPoint;
         double error = 0;
 

@@ -93,7 +93,8 @@ public class ButtonListener {
 
         /**
          * Runs the given Runnable.
-         *
+         * <p>
+         * Its possible pass a lambda expression or a method reference.
          * @param runnable the Runnable to run
          */
         public void run(Runnable runnable) {
@@ -102,7 +103,8 @@ public class ButtonListener {
 
         /**
          * Runs the given Runnable if the conditions are true, otherwise runs the elseRunnable.
-         *
+         * <p>
+         * Its possible pass a lambda expression or a method reference.
          * @param runnable the Runnable to run if the conditions are true
          * @param elseRunnableOptional the Runnable to run if the conditions are false
          */

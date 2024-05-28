@@ -4,9 +4,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import static org.firstinspires.ftc.teamcode.constants.DrivetrainConstants.*;
+
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 
@@ -18,7 +20,8 @@ public class Drivetrain implements Subsystem {
     private DcMotor motorLeft;
     private IMU imu;
 
-    private Drivetrain(){}
+    private Drivetrain() {
+    }
 
     @Override
     public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -39,20 +42,20 @@ public class Drivetrain implements Subsystem {
     @Override
     public void execute(SmartController driver) {
         arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX());
-
-    }
-    @Override
-    public void start(){
-
     }
 
     @Override
-    public void stop(){
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
         motorRight.setPower(0);
         motorLeft.setPower(0);
     }
 
-    public void arcadeDrive(double xSpeed, double zRotation){
+    public void arcadeDrive(double xSpeed, double zRotation) {
         double xSpeedLimited = Math.max(-1.0, Math.min(1.0, xSpeed));
         double zRotationLimited = Math.max(-1.0, Math.min(1.0, zRotation));
 
@@ -67,8 +70,8 @@ public class Drivetrain implements Subsystem {
         motorRight.setPower(rightSpeed);
     }
 
-    public static synchronized Drivetrain getInstance(){
-        if(instance == null){
+    public static synchronized Drivetrain getInstance() {
+        if (instance == null) {
             instance = new Drivetrain();
         }
         return instance;

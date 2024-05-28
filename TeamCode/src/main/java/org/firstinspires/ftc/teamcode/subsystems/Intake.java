@@ -3,27 +3,28 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import static org.firstinspires.ftc.teamcode.util.StaticHeading.Mode.ANGLE;
 import static org.firstinspires.ftc.teamcode.constants.IntakeConstants.*;
 import static org.firstinspires.ftc.teamcode.constants.GlobalConstants.*;
+
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
+import org.firstinspires.ftc.teamcode.util.ButtonListener;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 import org.firstinspires.ftc.teamcode.util.StaticHeading;
 
 public class Intake implements Subsystem {
-
     private static Intake instance;
-
     private DcMotor motorRight;
     private DcMotor motorLeft;
     private TouchSensor limitRight;
     private TouchSensor limitLeft;
-
     private StaticHeading pidController;
 
-    private Intake (){}
+    private Intake() {
+    }
 
     @Override
     public void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -46,24 +47,30 @@ public class Intake implements Subsystem {
     public void execute(SmartController operator) {
         pidController.PIDControl(TARGET_DEGREE, motorLeft.getCurrentPosition());
 
-        if (operator.isButtonLeftBumper() && operator.isButtonRightBumper()) {
-            openBothIntakes();
-        } else if (operator.isButtonLeftBumper()) {
-            openLeftIntake();
-        } else if (operator.isButtonRightBumper()) {
-            openRightIntake();
-        } else if (operator.isLeftTriggerPressed() && operator.isRightTriggerPressed()) {
-            closeBothIntakes(operator);
-        } else if (operator.isLeftTriggerPressed()) {
-            handleLeftTrigger(operator);
-        } else if (operator.isRightTriggerPressed()) {
-            handleRightTrigger(operator);
-        } else {
-            stop();
-        }
+        ButtonListener.whileTrue(operator.isButtonLeftBumper())
+                .and(operator.isButtonRightBumper())
+                .run(this::openBothIntakes);
+
+        ButtonListener.whileTrue(operator.isButtonLeftBumper())
+                .run(this::openLeftIntake);
+
+        ButtonListener.whileTrue(operator.isButtonRightBumper())
+                .run(this::openRightIntake);
+
+        ButtonListener.whileTrue(operator.isLeftTriggerPressed())
+                .and(operator.isRightTriggerPressed())
+                .run(() -> closeBothIntakes(operator));
+
+        ButtonListener.whileTrue(operator.isLeftTriggerPressed())
+                .run(() -> handleLeftTrigger(operator));
+
+        ButtonListener.whileTrue(operator.isRightTriggerPressed())
+                .run(() -> handleRightTrigger(operator));
+
     }
+
     @Override
-    public void start(){
+    public void start() {
 
     }
 
@@ -121,12 +128,17 @@ public class Intake implements Subsystem {
     }
 
     // Sensor Methods
-    public boolean isLimitRight() {return limitRight.isPressed();}
-    public boolean isLimitLeft() {return limitLeft.isPressed();}
+    public boolean isLimitRight() {
+        return limitRight.isPressed();
+    }
+
+    public boolean isLimitLeft() {
+        return limitLeft.isPressed();
+    }
 
     // Singleton Instance
     public static synchronized Intake getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new Intake();
         }
         return instance;

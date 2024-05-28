@@ -5,7 +5,6 @@ public class IntakeConstants {
     public static final String MOTOR_RIGHT = "intake_motorRight";
     public static final String LIMIT_LEFT = "intake_limitLeft";
     public static final String LIMIT_RIGHT = "intake_limitRight";
-
     public static final int TARGET_DEGREE = 110;
 
 

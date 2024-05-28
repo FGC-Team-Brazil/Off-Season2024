@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -13,7 +12,7 @@ import static org.firstinspires.ftc.teamcode.constants.GlobalConstants.*;
 
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 
-import org.firstinspires.ftc.teamcode.util.ButtonUtils;
+import org.firstinspires.ftc.teamcode.util.ButtonListener;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 import org.firstinspires.ftc.teamcode.util.StaticHeading;
 
@@ -74,21 +73,21 @@ public class LinearSlide implements Subsystem {
     @Override
     public void execute(SmartController operator) {
 
-        ButtonUtils.whileHeld(operator.isButtonX())
-                .then(() -> endHeightGoal = DEPOSIT_HEIGHT_MID);
+        ButtonListener.whileTrue(operator.isButtonX())
+                .run(() -> endHeightGoal = DEPOSIT_HEIGHT_MID);
 
-        ButtonUtils.whileHeld(operator.isButtonY())
-                .then(() -> endHeightGoal = DEPOSIT_HEIGHT_HIGH);
+        ButtonListener.whileTrue(operator.isButtonY())
+                .run(() -> endHeightGoal = DEPOSIT_HEIGHT_HIGH);
 
-        ButtonUtils.whileHeld(operator.isButtonA())
-                .then(() -> endHeightGoal = 0);
+        ButtonListener.whileTrue(operator.isButtonA())
+                .run(() -> endHeightGoal = 0);
 
-        ButtonUtils.whileHeld(operator.isRightTriggerPressed())
+        ButtonListener.whileTrue(operator.isRightTriggerPressed())
                 .and(endHeightGoal == DEPOSIT_HEIGHT_MID)
-                .then(() -> currentMode = linearMode.HANG);
+                .run(() -> currentMode = linearMode.HANG);
 
-        ButtonUtils.whileHeld(operator.isButtonDPadUp())
-                .then(() -> currentMode = linearMode.DEPOSIT);
+        ButtonListener.whileTrue(operator.isButtonDPadUp())
+                .run(() -> currentMode = linearMode.DEPOSIT);
 
 
         boolean physicalLimitReached = magneticLimit.isPressed();//todo replace false's with sensor detecting slide limit conditions

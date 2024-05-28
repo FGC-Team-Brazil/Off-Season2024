@@ -11,7 +11,7 @@ import static org.firstinspires.ftc.teamcode.constants.IntakeConstants.*;
 import static org.firstinspires.ftc.teamcode.constants.GlobalConstants.*;
 
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
-import org.firstinspires.ftc.teamcode.util.ButtonUtils;
+import org.firstinspires.ftc.teamcode.util.ButtonListener;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 import org.firstinspires.ftc.teamcode.util.StaticHeading;
 
@@ -47,25 +47,25 @@ public class Intake implements Subsystem {
     public void execute(SmartController operator) {
         pidController.PIDControl(TARGET_DEGREE, motorLeft.getCurrentPosition());
 
-        ButtonUtils.whileHeld(operator.isButtonLeftBumper())
+        ButtonListener.whileTrue(operator.isButtonLeftBumper())
                 .and(operator.isButtonRightBumper())
-                .then(this::openBothIntakes);
+                .run(this::openBothIntakes);
 
-        ButtonUtils.whileHeld(operator.isButtonLeftBumper())
-                .then(this::openLeftIntake);
+        ButtonListener.whileTrue(operator.isButtonLeftBumper())
+                .run(this::openLeftIntake);
 
-        ButtonUtils.whileHeld(operator.isButtonRightBumper())
-                .then(this::openRightIntake);
+        ButtonListener.whileTrue(operator.isButtonRightBumper())
+                .run(this::openRightIntake);
 
-        ButtonUtils.whileHeld(operator.isLeftTriggerPressed())
+        ButtonListener.whileTrue(operator.isLeftTriggerPressed())
                 .and(operator.isRightTriggerPressed())
-                .then(() -> closeBothIntakes(operator));
+                .run(() -> closeBothIntakes(operator));
 
-        ButtonUtils.whileHeld(operator.isLeftTriggerPressed())
-                .then(() -> handleLeftTrigger(operator));
+        ButtonListener.whileTrue(operator.isLeftTriggerPressed())
+                .run(() -> handleLeftTrigger(operator));
 
-        ButtonUtils.whileHeld(operator.isRightTriggerPressed())
-                .then(() -> handleRightTrigger(operator));
+        ButtonListener.whileTrue(operator.isRightTriggerPressed())
+                .run(() -> handleRightTrigger(operator));
 
     }
 

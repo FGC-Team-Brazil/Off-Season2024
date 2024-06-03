@@ -93,6 +93,11 @@ public class Intake implements Subsystem {
                     operator.rumble(0, 1, 200);
                 });
 
+        // SmartController Example Usage
+        operator.whileButtonA()
+                .and(isLimitLeft())
+                .run(() -> motorLeft.setPower(0));
+
         stop();
     }
 

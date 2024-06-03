@@ -12,8 +12,8 @@ import java.util.Optional;
  */
 public class ButtonListener {
 
-    private final List<Boolean> buttonList;
-    private boolean button;
+    final List<Boolean> buttonList;
+    boolean button;
     private boolean toggleState;
 
     private ButtonListener() {

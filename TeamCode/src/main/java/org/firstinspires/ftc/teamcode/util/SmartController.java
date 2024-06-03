@@ -13,8 +13,13 @@ import org.firstinspires.ftc.teamcode.constants.GlobalConstants;
 public class SmartController {
     public Gamepad gamepad;
 
+    private final SingleButtonListener buttonA;
+    private final SingleButtonListener buttonB;
+
     public SmartController(Gamepad gamepad) {
         this.gamepad = gamepad;
+        this.buttonA = new SingleButtonListener(gamepad.a);
+        this.buttonB = new SingleButtonListener(gamepad.b);
     }
 
     public double getLeftStickY() {
@@ -107,6 +112,22 @@ public class SmartController {
 
     public boolean isButtonGuide() {
         return gamepad.guide;
+    }
+
+    public SingleButtonListener.ButtonBuilder whileButtonA() {
+        return buttonA.whileTrue();
+    }
+
+    public SingleButtonListener.ButtonBuilder whileButtonB() {
+        return buttonB.whileTrue();
+    }
+
+    public SingleButtonListener.ButtonBuilder toggleOnButtonA() {
+        return buttonA.toggleOnTrue();
+    }
+
+    public SingleButtonListener.ButtonBuilder toggleOnButtonB() {
+        return buttonB.toggleOnTrue();
     }
 
     public void rumble(double leftRumble, double rightRumble, int milliseconds) {

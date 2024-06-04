@@ -73,7 +73,8 @@ public class LinearSlide implements Subsystem {
     }
 
     @Override
-    public void execute(SmartController operator) {
+    public void execute(SmartController operator, Telemetry telemetry) {
+        telemetry.addData("LinearSlide Subsystem", "Running");
 
         ButtonListener.whileTrue(operator.isButtonX())
                 .run(() -> endHeightGoal = DEPOSIT_HEIGHT_MID);

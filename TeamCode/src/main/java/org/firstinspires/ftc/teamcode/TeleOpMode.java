@@ -48,8 +48,8 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void loop() {
-        subsystemsDriver.forEach(subsystem -> subsystem.execute(driver));
-        subsystemsOperator.forEach(subsystem -> subsystem.execute(operator));
+        subsystemsDriver.forEach(subsystem -> subsystem.execute(driver, telemetry));
+        subsystemsOperator.forEach(subsystem -> subsystem.execute(operator, telemetry));
         telemetry.update();
     }
 

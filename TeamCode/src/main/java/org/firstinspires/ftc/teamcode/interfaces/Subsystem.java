@@ -21,5 +21,5 @@ public interface Subsystem {
 
     void stop();
 
-    void execute(SmartController controller);
+    void execute(SmartController controller, Telemetry telemetry);
 }

@@ -35,6 +35,8 @@ public class DepositBox implements Subsystem {
         DepositMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         DepositMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        telemetry.addData("DepositBox Subsystem", "Initialized");
     }
 
     @Override
@@ -47,7 +49,9 @@ public class DepositBox implements Subsystem {
     }
 
     @Override
-    public void execute(SmartController operator) {
+    public void execute(SmartController operator, Telemetry telemetry) {
+        telemetry.addData("DepositBox Subsystem", "Running");
+
         ButtonListener.whileTrue(operator.isButtonDPadUp())
                 .and(LinearSlide.getInstance().currentPIDGoal >= LinearSlideConstants.DEPOSIT_HEIGHT_MID - 0.1)
                 .run(() -> endHeightGoal = BOX_DEPOSIT_ANGLE);

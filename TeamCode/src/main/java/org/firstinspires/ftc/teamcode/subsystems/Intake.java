@@ -44,7 +44,9 @@ public class Intake implements Subsystem {
     }
 
     @Override
-    public void execute(SmartController operator) {
+    public void execute(SmartController operator, Telemetry telemetry) {
+        telemetry.addData("Intake Subsystem", "Running");
+
         PIDController.calculate(TARGET_DEGREE, motorLeft.getCurrentPosition());
 
         ButtonListener.whileTrue(operator.isButtonLeftBumper())

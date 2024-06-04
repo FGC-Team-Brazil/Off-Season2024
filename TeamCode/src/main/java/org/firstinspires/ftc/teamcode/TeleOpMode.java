@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.subsystems.DepositBox;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.LinearSlide;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.util.GamepadUtils;
 import org.firstinspires.ftc.teamcode.util.SmartController;
 
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class TeleOpMode extends OpMode {
 
     private ArrayList<Subsystem> subsystemsDriver;
     private ArrayList<Subsystem> subsystemsOperator;
-    private SmartController driver;
-    private SmartController operator;
+    private GamepadUtils driver;
+    private GamepadUtils operator;
 
     @Override
     public void init() {

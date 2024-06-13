@@ -30,7 +30,14 @@ public class Drivetrain implements Subsystem {
 
     private Telemetry telemetry;
 
-    private double triggerDeadBand = 0.3;
+    private double speedLimiter = 0.8;
+
+    private enum SpeedMode {
+        SLOW,
+        NORMAL,
+        FAST
+    }
+    private SpeedMode currentSpeedMode = SpeedMode.NORMAL;
 
     private Drivetrain() {
     }
@@ -61,18 +68,35 @@ public class Drivetrain implements Subsystem {
     public void execute(SmartController driver) {
         telemetry.addData("DriveTrain Subsystem", "Running");
 
-        arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX(), driver.getLeftTrigger(), driver.getRightTrigger());
+        arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX());
 
         ButtonListener.whileTrue(driver.isButtonA())
                 .run(() -> setPosition(1.16, getAverageEncoderMeters()));
         ButtonListener.toggleOnTrue(driver.isButtonB())
-                .run(() -> resetEncoders());
+                .run(this::resetEncoders);
+        ButtonListener.toggleOnTrue(driver.isLeftTriggerPressed())
+                .run(() -> currentSpeedMode = SpeedMode.SLOW);
+        ButtonListener.toggleOnTrue(driver.isRightTriggerPressed())
+                .run(() -> currentSpeedMode = SpeedMode.FAST);
+        ButtonListener.toggleOnTrue(!driver.isLeftTriggerPressed())
+                .and(!driver.isRightTriggerPressed())
+                .run(() -> currentSpeedMode = SpeedMode.NORMAL);
+
+        switch (currentSpeedMode) {
+            case SLOW:
+                speedLimiter = 0.6;
+                break;
+            case NORMAL:
+                speedLimiter = 0.8;
+                break;
+            case FAST:
+                speedLimiter = 1.0;
+        }
 
         if (pidController.atSetPoint()) {
             telemetry.addData("pid", "atSetpoint");
         }
         telemetry.addData("encoder", getAverageEncoderMeters());
-
     }
 
     @Override
@@ -88,24 +112,20 @@ public class Drivetrain implements Subsystem {
 
     public void setPosition(double setPoint, double reference) {
         setPower(pidController.calculate(setPoint, reference), pidController.calculate(setPoint, reference));
-
     }
 
-    public void arcadeDrive(double xSpeed, double zRotation, double slowMode, double fastMode) {
-        double limiter = 0.8;
-        if (slowMode > triggerDeadBand &&  fastMode < triggerDeadBand){
-            limiter = 0.6;
-        } else if(fastMode > triggerDeadBand && slowMode < triggerDeadBand) {
-            limiter = 1.0;
-        }
-
-        double xSpeedLimited = Math.max(-limiter, Math.min(limiter, xSpeed));
-        double zRotationLimited = Math.max(-limiter, Math.min(limiter, zRotation));
+    public void arcadeDrive(double xSpeed, double zRotation) {
+        double xSpeedLimited = clamp(xSpeed, -speedLimiter, speedLimiter);
+        double zRotationLimited = clamp(zRotation, -speedLimiter, speedLimiter);
 
         double leftSpeed = xSpeedLimited - zRotationLimited;
         double rightSpeed = xSpeedLimited + zRotationLimited;
 
         setPower(leftSpeed, rightSpeed);
+    }
+    
+    public double clamp(double value, double min, double max){
+        return Math.max(min, Math.min(value, max));
     }
 
     public void setPower(double leftSpeed, double rightSpeed) {

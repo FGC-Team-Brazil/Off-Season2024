@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DepositBox;
-import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.XDrivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.LinearSlide;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.util.SmartController;
@@ -28,7 +28,7 @@ public class TeleOpMode extends OpMode {
         this.subsystemsDriver = new ArrayList<Subsystem>();
         this.subsystemsOperator = new ArrayList<Subsystem>();
 
-        this.subsystemsDriver.add(Drivetrain.getInstance());
+        this.subsystemsDriver.add(XDrivetrain.getInstance());
 
         this.subsystemsOperator.add(LinearSlide.getInstance());
         this.subsystemsOperator.add(Intake.getInstance());
@@ -48,8 +48,8 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void loop() {
-        subsystemsDriver.forEach(subsystem -> subsystem.execute(driver, telemetry));
-        subsystemsOperator.forEach(subsystem -> subsystem.execute(operator, telemetry));
+        subsystemsDriver.forEach(subsystem -> subsystem.execute(driver));
+        subsystemsOperator.forEach(subsystem -> subsystem.execute(operator));
         telemetry.update();
     }
 

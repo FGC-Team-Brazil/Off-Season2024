@@ -5,11 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import static org.firstinspires.ftc.teamcode.constants.DrivetrainConstants.*;
 import static org.firstinspires.ftc.teamcode.constants.GlobalConstants.*;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.interfaces.Subsystem;
 import org.firstinspires.ftc.teamcode.util.ButtonListener;
 import org.firstinspires.ftc.teamcode.util.SmartController;
@@ -24,6 +27,8 @@ public class Drivetrain implements Subsystem {
     private IMU imu;
 
     private StaticHeading pidController;
+
+    private Telemetry telemetry;
 
     private double triggerDeadBand = 0.3;
 
@@ -40,6 +45,8 @@ public class Drivetrain implements Subsystem {
         pidController = new StaticHeading(0.5, 0.01, 0.0, 0.3);
         pidController.setTolerance(0.05);
 
+        this.telemetry = telemetry;
+
         motorLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         motorLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -51,7 +58,7 @@ public class Drivetrain implements Subsystem {
     }
 
     @Override
-    public void execute(SmartController driver, Telemetry telemetry) {
+    public void execute(SmartController driver) {
         telemetry.addData("DriveTrain Subsystem", "Running");
 
         arcadeDrive(-driver.getLeftStickY(), driver.getRightStickX(), driver.getLeftTrigger(), driver.getRightTrigger());
@@ -104,6 +111,14 @@ public class Drivetrain implements Subsystem {
     public void setPower(double leftSpeed, double rightSpeed) {
         motorLeft.setPower(leftSpeed);
         motorRight.setPower(rightSpeed);
+    }
+
+    // Gyro Methods
+    public void resetHeading(){
+        imu.resetYaw();
+    }
+    public double getHeading(){
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
 
     // Encoder Methods

@@ -21,6 +21,8 @@ public class DepositBox implements Subsystem {
     DcMotor DepositMotor;
     StaticHeading DepositPID;
 
+    Telemetry telemetry;
+
     private static DepositBox instance;
 
     private DepositBox() {
@@ -32,8 +34,9 @@ public class DepositBox implements Subsystem {
 
         DepositPID = new StaticHeading(kP, kI, kD, kF);
 
-        DepositMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.telemetry = telemetry;
 
+        DepositMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         DepositMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         telemetry.addData("DepositBox Subsystem", "Initialized");
@@ -49,7 +52,7 @@ public class DepositBox implements Subsystem {
     }
 
     @Override
-    public void execute(SmartController operator, Telemetry telemetry) {
+    public void execute(SmartController operator) {
         telemetry.addData("DepositBox Subsystem", "Running");
 
         ButtonListener.whileTrue(operator.isButtonDPadUp())

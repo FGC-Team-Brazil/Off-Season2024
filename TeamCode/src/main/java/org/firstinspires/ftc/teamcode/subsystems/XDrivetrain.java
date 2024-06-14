@@ -4,11 +4,8 @@ import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
-
-import com.acmerobotics.dashboard.FtcDashboard;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -35,7 +32,7 @@ public class XDrivetrain implements Subsystem {
     private ArrayList<DcMotor> driveMotors;
 
     private StaticHeading pidController;
-    
+
     Telemetry telemetry;
 
     private XDrivetrain() {
@@ -115,12 +112,10 @@ public class XDrivetrain implements Subsystem {
 
         
         double gyroAngle = getHeading() * Math.PI / 180; // Converts gyroAngle into radians
-        if (gyroAngle <= 0) {
-            gyroAngle = gyroAngle + (Math.PI / 2);
-        } else if (0 < gyroAngle && gyroAngle < Math.PI / 2) {
-            gyroAngle = gyroAngle + (Math.PI / 2);
-        } else if (Math.PI / 2 <= gyroAngle) {
+        if (Math.PI / 2 <= gyroAngle){
             gyroAngle = gyroAngle - (3 * Math.PI / 2);
+        }else{
+            gyroAngle = gyroAngle + (Math.PI / 2);
         }
         gyroAngle = -1 * gyroAngle;
 
@@ -142,6 +137,16 @@ public class XDrivetrain implements Subsystem {
         theta = Math.atan2(leftStickY, leftStickX) - gyroAngle - (Math.PI / 2); //PEGA ANGULO DO CIRCULO TRIGONOMÉTRICO, ENTRE X E Y (HÁ A CORREÇÃO DA ORIENTAÇÃO AQUI)
         Px = Math.sqrt(Math.pow(leftStickX, 2) + Math.pow(leftStickY, 2)) * (Math.sin(theta + Math.PI / 4)); //RODAS FRONT RIGHT E BACK LEFT // AQUI ELE SOMA 45GRAUS POIS AS RODAS PARES TEM DIFERENÇA DE 90GRAUS
         Py = Math.sqrt(Math.pow(leftStickX, 2) + Math.pow(leftStickY, 2)) * (Math.sin(theta - Math.PI / 4)); //RODAS FRONT LEFT E BACK RIGHT // AQUI ELE DIMINUI 45GRAUS POIS AS RODAS PARES TEM DIFERENÇA DE 90GRAUS
+
+        // Telemetry for debug
+        /*telemetry.addData("Stick_X", leftStickX);
+        telemetry.addData("Stick_Y", leftStickY);
+        telemetry.addData("imuAngle", gyroAngle);
+        telemetry.addData("Magnitude", Math.sqrt(Math.pow(leftStickX, 2) + Math.pow(leftStickY, 2)));
+        telemetry.addData("Front Left", Py - protate);
+        telemetry.addData("Back Left", Px - protate);
+        telemetry.addData("Back Right", Py + protate);
+        telemetry.addData("Front Right", Px + protate);*/
 
         frontLeftMotor.setPower(Py - protate);
         backLeftMotor.setPower(Px - protate);

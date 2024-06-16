@@ -23,6 +23,8 @@ public class Intake implements Subsystem {
     private TouchSensor limitLeft;
     private StaticHeading PIDController;
 
+    Telemetry telemetry;
+
     private Intake() {
     }
 
@@ -40,11 +42,15 @@ public class Intake implements Subsystem {
 
         PIDController = new StaticHeading(PID.kP, PID.kI, PID.kD, PID.kF, ANGLE);
 
+        this.telemetry = telemetry;
+
         telemetry.addData("Intake Subsystem", "Initialized");
     }
 
     @Override
     public void execute(SmartController operator) {
+        telemetry.addData("Intake Subsystem", "Running");
+
         PIDController.calculate(TARGET_DEGREE, motorLeft.getCurrentPosition());
 
         ButtonListener.whileTrue(operator.isButtonLeftBumper())

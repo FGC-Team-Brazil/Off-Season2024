@@ -20,7 +20,6 @@ public class LinearSlide implements Subsystem {
 
     private static LinearSlide instance;
 
-
     public double currentPIDGoal = 0;
     private DcMotor liftMotorRight;
     private DcMotor liftMotorLeft;
@@ -47,6 +46,9 @@ public class LinearSlide implements Subsystem {
 
     public linearMode currentMode = linearMode.NORMAL;
 
+    Telemetry telemetry;
+
+
     private LinearSlide() {
     }
 
@@ -69,11 +71,14 @@ public class LinearSlide implements Subsystem {
         liftMotorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BotHangMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        this.telemetry = telemetry;
+
         telemetry.addData("LinearSlide Subsystem", "Initialized");
     }
 
     @Override
     public void execute(SmartController operator) {
+        telemetry.addData("LinearSlide Subsystem", "Running");
 
         ButtonListener.whileTrue(operator.isButtonX())
                 .run(() -> endHeightGoal = DEPOSIT_HEIGHT_MID);

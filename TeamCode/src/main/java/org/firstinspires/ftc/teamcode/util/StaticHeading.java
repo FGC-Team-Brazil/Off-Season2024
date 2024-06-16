@@ -4,11 +4,12 @@ package org.firstinspires.ftc.teamcode.util;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-/**
+/*
  * Standard class for building PIDF control systems.
  * It uses the constants: Proportional, Integral and Derivative.
  * In addition to PID, it implements a FeedForward constant.
  */
+
 public class StaticHeading {
     public enum Mode {
         POSITION,
@@ -64,7 +65,7 @@ public class StaticHeading {
         double derivative = (error - lastError) / (timer.seconds());
         lastError = error;
         timer.reset();
-        double output = (error * kP) + (derivative * kD) + (integralSum * kI) + kF;
+        double output = (error * kP) + (derivative * kD) + (integralSum * kI) + Math.signum(error)*kF;
 
         if (Math.abs(error) < positionTolerance) {
             atSetPoint = true;
